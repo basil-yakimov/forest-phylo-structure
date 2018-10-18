@@ -47,7 +47,7 @@ sp.list3 <- sp.list2[-id2]
 
 grep("Bidens*", phylo$tip.label, value = T)
 
-#Îïå÷àòêè
+#Misprints
 colnames(ha)[colnames(ha) == "Leibitzia_anandria"] <- "Leibnitzia_anandria"
 colnames(ha)[colnames(ha) == "Impatiens_noli.tangere"] <- "Impatiens_noli"
 colnames(ha)[colnames(ha) == "Lilium_lanciforlium"] <- "Lilium_lancifolium"
@@ -63,7 +63,7 @@ for (ii in 1:length(sp.list3)){
   one_sp <- c(one_sp, grep(gsub("\\_.*","", sp.list3)[ii], names(g[as.vector(g) == 1]), value = T))
 }
 
-#Â ğîäå 1 âèä
+#Monotypic genera
 phylo$tip.label[phylo$tip.label == "Amphicarpaea_bracteata"] <- "Amphicarpaea_trisperma"
 phylo$tip.label[phylo$tip.label == "Aquilegia_viscosa"] <- "Aquilegia_yabeana"
 phylo$tip.label[phylo$tip.label == "Bidens_mitis"] <- "Bidens_parviflora"
@@ -93,7 +93,7 @@ phylo$tip.label[phylo$tip.label == "Thesium_chinense"] <- "Thesium_refractum"
 phylo$tip.label[phylo$tip.label == "Gentiana_lutea"] <- "Tripterospermum_chinense"
 phylo$tip.label[phylo$tip.label == "Veronica_lanceolata"] <- "Veronica_linariifolia"
 
-#2 è áîëåå âèäà â ğîäå
+#Polytypic genera
 phylo <- my.add(phylo, "Astragalus_sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Iris_Sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Rubus_Sp.", tol = 1e-6)
@@ -101,7 +101,7 @@ phylo <- my.add(phylo, "Taraxacum_Sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Vicia_Sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Viola_Sp.", tol = 1e-6)
 
-#Áëèçêèå âèäû
+#Closest species
 phylo$tip.label[phylo$tip.label == "Aconitum_sinomontanum"] <- "Aconitum_barbatum" #doi.org/10.1371/journal.pone.0171038
 
 phylo$tip.label[phylo$tip.label == "Adenophora_triphylla"] <- "Adenophora_divaricata" #DOI: 10.1600/036364408783887465
@@ -128,16 +128,16 @@ phylo$tip.label[phylo$tip.label == "Viola_lactiflora"] <- "Viola_yezoensis"
 
 #
 
-ha$Prenanthes_tatarinowii <- ha$Prenanthes_macrophylla + ha$Prenanthes_tatarinowii #îäèí è òîò æå âèä
+ha$Prenanthes_tatarinowii <- ha$Prenanthes_macrophylla + ha$Prenanthes_tatarinowii #the same species
 ha$Prenanthes_macrophylla <- NULL
 
-ha$Bupleurum_chinense <- ha$Bupleurum_chinense + ha$Bupleurum_chinense.1 #ïîäâèä ïåğâîãî
+ha$Bupleurum_chinense <- ha$Bupleurum_chinense + ha$Bupleurum_chinense.1 #Subspecies
 ha$Bupleurum_chinense.1 <- NULL
 
 ha$Thalictrum_minus <- ha$Thalictrum_minus + ha$Thalictrum_var.
 ha$Thalictrum_var. <- NULL
 
-#Îñòàâøèåñÿ âèäû
+#The rest of species
 
 sp.list2 <- colnames(ha)
 id2 <- which(sp.list2 %in% phylo$tip.label)
