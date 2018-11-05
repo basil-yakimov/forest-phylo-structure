@@ -85,3 +85,6 @@ cor.test(h.ses$n, h.ses$taxa.labels, method = "kendall")
 
 save.image("herb-phylo-analysis.RData")
 
+ses <- ses.mpd(ha, cophenetic(tree), null.model = "taxa.labels", runs = 999, iterations = 1000)
+
+
