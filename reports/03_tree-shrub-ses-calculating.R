@@ -1,8 +1,9 @@
-load('tree-shrub-phylo.RData')
+load('workspaces/tree-shrub-phylo.RData')
 
 library(ape)
-dist.mat <- cophenetic(tree)              
 library(picante)
+
+dist.mat <- cophenetic(tree)            
 mpd.mat <- mpd(ta, dist.mat, abundance.weighted = F)
 smpd.mat <- mpd(sa, dist.mat, abundance.weighted = F)
 
@@ -76,32 +77,45 @@ sses.a.is <- ses.mpd(sa, dist.mat, null.model = "independentswap", runs = 999, i
 sses.a.ts <- ses.mpd(sa, dist.mat, null.model = "trialswap", runs = 999, iterations = 1000, abundance.weighted = T)
 
 rm(mpd.mat, mpd.mat.a, smpd.mat, smpd.mat.a, my.add, my.bind.tip)
-save.image("tree-shrub-phylo-analysis-ses.RData")
+save.image("workspaces/tree-shrub-ses.RData")
 
 #_____________________________________________________________________
 
-plot(1:96, tses.tl$mpd.obs)
-plot(1:96, tses.tl$mpd.obs.z)
+load("workspaces/tree-shrub-ses.RData")
 
 
-hgt <- read.table("hgt.txt")[[1]]
-  
-  
-  
+hgt <- read.table("data/hgt.txt")[[1]]
+
+
 t.ses <- data.frame(hgt, taxa.labels = tses.tl$mpd.obs.z,
-                richness = tses.r$mpd.obs.z,
-                frequency = tses.f$mpd.obs.z,
-                sample.pool = tses.sp$mpd.obs.z,
-                phylogeny.pool = tses.pp$mpd.obs.z,
-                independentswap = tses.is$mpd.obs.z,
-                trialswap = tses.ts$mpd.obs.z,
-                taxa.labels.a = tses.a.tl$mpd.obs.z, 
-                richness.a = tses.a.r$mpd.obs.z,
-                frequency.a = tses.a.f$mpd.obs.z,
-                sample.pool.a = tses.a.sp$mpd.obs.z,
-                phylogeny.pool.a = tses.a.pp$mpd.obs.z,
-                independentswap.a = tses.a.is$mpd.obs.z,
-                trialswap.a = tses.a.ts$mpd.obs.z)
+                    richness = tses.r$mpd.obs.z,
+                    frequency = tses.f$mpd.obs.z,
+                    sample.pool = tses.sp$mpd.obs.z,
+                    phylogeny.pool = tses.pp$mpd.obs.z,
+                    independentswap = tses.is$mpd.obs.z,
+                    trialswap = tses.ts$mpd.obs.z,
+                    taxa.labels.a = tses.a.tl$mpd.obs.z, 
+                    richness.a = tses.a.r$mpd.obs.z,
+                    frequency.a = tses.a.f$mpd.obs.z,
+                    sample.pool.a = tses.a.sp$mpd.obs.z,
+                    phylogeny.pool.a = tses.a.pp$mpd.obs.z,
+                    independentswap.a = tses.a.is$mpd.obs.z,
+                    trialswap.a = tses.a.ts$mpd.obs.z)
+
+t.ses.p <- data.frame(hgt, taxa.labels = tses.tl$mpd.obs.p,
+                      richness = tses.r$mpd.obs.p,
+                      frequency = tses.f$mpd.obs.p,
+                      sample.pool = tses.sp$mpd.obs.p,
+                      phylogeny.pool = tses.pp$mpd.obs.p,
+                      independentswap = tses.is$mpd.obs.p,
+                      trialswap = tses.ts$mpd.obs.p,
+                      taxa.labels.a = tses.a.tl$mpd.obs.p, 
+                      richness.a = tses.a.r$mpd.obs.p,
+                      frequency.a = tses.a.f$mpd.obs.p,
+                      sample.pool.a = tses.a.sp$mpd.obs.p,
+                      phylogeny.pool.a = tses.a.pp$mpd.obs.p,
+                      independentswap.a = tses.a.is$mpd.obs.p,
+                      trialswap.a = tses.a.ts$mpd.obs.p)
 
 s.ses <- data.frame(hgt, taxa.labels = sses.tl$mpd.obs.z,
                     richness = sses.r$mpd.obs.z,
@@ -118,45 +132,21 @@ s.ses <- data.frame(hgt, taxa.labels = sses.tl$mpd.obs.z,
                     independentswap.a = sses.a.is$mpd.obs.z,
                     trialswap.a = sses.a.ts$mpd.obs.z)
 
-tses.tl.m <- lm(taxa.labels ~ hgt, t.ses)
-plot(t.ses$hgt, t.ses$taxa.labels, pch = 21, bg = "steelblue")
-abline(tses.tl.m)
-title(main = paste0("taxa.labels - ", round(sp$estimate, dig = 3), " - ", round(sp$p.value, 3)))
+s.ses.p <- data.frame(hgt, taxa.labels = sses.tl$mpd.obs.p,
+                      richness = sses.r$mpd.obs.p,
+                      frequency = sses.f$mpd.obs.p,
+                      sample.pool = sses.sp$mpd.obs.p,
+                      phylogeny.pool = sses.pp$mpd.obs.p,
+                      independentswap = sses.is$mpd.obs.p,
+                      trialswap = sses.ts$mpd.obs.p,
+                      taxa.labels.a = sses.a.tl$mpd.obs.p, 
+                      richness.a = sses.a.r$mpd.obs.p,
+                      frequency.a = sses.a.f$mpd.obs.p,
+                      sample.pool.a = sses.a.sp$mpd.obs.p,
+                      phylogeny.pool.a = sses.a.pp$mpd.obs.p,
+                      independentswap.a = sses.a.is$mpd.obs.p,
+                      trialswap.a = sses.a.ts$mpd.obs.p)
 
-
-
-shapiro.test(resid(tses.tl.m))
-library(nortest)
-lillie.test(resid(tses.tl.m))
-ad.test(resid(tses.tl.m))
-
-library(car)
-ncvTest(tses.tl.m)
-summary(tses.tl.m)
-
-cor.test(t.ses$hgt[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "spearman")
-
-
-#_____________________________________________________________________
-
-cor(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)])
-cor.test(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)])
-
-cor(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "spearman")
-sp <- cor.test(t.ses$hgt[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "spearman")
-
-cor(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "kendall")
-cor.test(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "kendall")
-
-#_____________________________________________________________________
-
-cor(s.ses$n, s.ses$taxa.labels)
-cor.test(s.ses$n, s.ses$taxa.labels)
-
-cor(s.ses$n, s.ses$taxa.labels, method = "spearman")
-cor.test(s.ses$n, s.ses$taxa.labels, method = "spearman")
-
-cor(s.ses$n, s.ses$taxa.labels, method = "kendall")
-cor.test(s.ses$n, s.ses$taxa.labels, method = "kendall")
-
-save.image("tree-shrub-phylo-analysis.RData")
+rm(list = c(ls(pattern = "tses"), ls(pattern = "sses")), dist.mat, tree)
+save(t.ses, t.ses.p, file = "workspaces/tree-ses.RData")
+save(s.ses, s.ses.p, file = "workspaces/shrub-ses.RData")
