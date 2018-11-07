@@ -83,7 +83,12 @@ save.image("tree-shrub-phylo-analysis-ses.RData")
 plot(1:96, tses.tl$mpd.obs)
 plot(1:96, tses.tl$mpd.obs.z)
 
-t.ses <- data.frame(n = 1:96, taxa.labels = tses.tl$mpd.obs.z,
+
+hgt <- read.table("hgt.txt")[[1]]
+  
+  
+  
+t.ses <- data.frame(hgt, taxa.labels = tses.tl$mpd.obs.z,
                 richness = tses.r$mpd.obs.z,
                 frequency = tses.f$mpd.obs.z,
                 sample.pool = tses.sp$mpd.obs.z,
@@ -98,7 +103,7 @@ t.ses <- data.frame(n = 1:96, taxa.labels = tses.tl$mpd.obs.z,
                 independentswap.a = tses.a.is$mpd.obs.z,
                 trialswap.a = tses.a.ts$mpd.obs.z)
 
-s.ses <- data.frame(n = 1:96, taxa.labels = sses.tl$mpd.obs.z,
+s.ses <- data.frame(hgt, taxa.labels = sses.tl$mpd.obs.z,
                     richness = sses.r$mpd.obs.z,
                     frequency = sses.f$mpd.obs.z,
                     sample.pool = sses.sp$mpd.obs.z,
@@ -113,9 +118,12 @@ s.ses <- data.frame(n = 1:96, taxa.labels = sses.tl$mpd.obs.z,
                     independentswap.a = sses.a.is$mpd.obs.z,
                     trialswap.a = sses.a.ts$mpd.obs.z)
 
-tses.tl.m <- lm(taxa.labels ~ n, t.ses)
-plot(t.ses$n, t.ses$taxa.labels)
+tses.tl.m <- lm(taxa.labels ~ hgt, t.ses)
+plot(t.ses$hgt, t.ses$taxa.labels, pch = 21, bg = "steelblue")
 abline(tses.tl.m)
+title(main = paste0("taxa.labels - ", round(sp$estimate, dig = 3), " - ", round(sp$p.value, 3)))
+
+
 
 shapiro.test(resid(tses.tl.m))
 library(nortest)
@@ -124,6 +132,10 @@ ad.test(resid(tses.tl.m))
 
 library(car)
 ncvTest(tses.tl.m)
+summary(tses.tl.m)
+
+cor.test(t.ses$hgt[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "spearman")
+
 
 #_____________________________________________________________________
 
@@ -131,7 +143,7 @@ cor(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labe
 cor.test(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)])
 
 cor(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "spearman")
-cor.test(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "spearman")
+sp <- cor.test(t.ses$hgt[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "spearman")
 
 cor(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "kendall")
 cor.test(t.ses$n[!is.na(t.ses$taxa.labels)], t.ses$taxa.labels[!is.na(t.ses$taxa.labels)], method = "kendall")
