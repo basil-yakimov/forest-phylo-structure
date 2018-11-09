@@ -1,9 +1,9 @@
 library(ape)
-phylo <- read.tree("data/Vascular_Plants_rooted.dated.tre")
+phylo <- read.tree("Vascular_Plants_rooted.dated.tre")
 
 library(readxl)
-sp1 <- read_excel("data/Forest_data.xlsx", sheet = 4, range = "A2:A21", col_names = F)[[1]]
-sp2 <- read_excel("data/Forest_data.xlsx", sheet = 5, range = "A2:A42", col_names = F)[[1]]
+sp1 <- read_excel("Forest_data.xlsx", sheet = 4, range = "A2:A21", col_names = F)[[1]]
+sp2 <- read_excel("Forest_data.xlsx", sheet = 5, range = "A2:A42", col_names = F)[[1]]
 
 tree.list <- sapply(strsplit(sp1, " "), function(x) paste(x[1], x[2]))
 tree.list <- sub(" ", "_", tree.list)
@@ -12,13 +12,13 @@ shrub.list <- sapply(strsplit(sp2, " "), function(x) paste(x[1], x[2]))
 shrub.list <- sub(" ", "_", shrub.list)
 
 
-ta <- read_excel("data/Forest_data.xlsx", sheet = 4, range = "B2:CS21", col_names = F)
+ta <- read_excel("Forest_data.xlsx", sheet = 4, range = "B2:CS21", col_names = F)
 ta <- t(ta)
 colnames(ta) <- tree.list
 ta <- ta[, colSums(ta) > 0]
 ta <- data.frame(ta)
 
-sa <- read_excel("data/Forest_data.xlsx", sheet = 5, range = "B2:CS42", col_names = F)
+sa <- read_excel("Forest_data.xlsx", sheet = 5, range = "B2:CS42", col_names = F)
 sa <- t(sa)
 colnames(sa) <- shrub.list
 sa <- sa[, colSums(sa) > 0]
@@ -33,7 +33,7 @@ table(genera)
 
 #---#
 
-source("R/addition-tools.r")
+source("addition-tools.r")
 
 id <- which(sp.list %in% phylo$tip.label)
 
@@ -112,4 +112,4 @@ is.ultrametric(tree, tol = 1e-8)
 #-------#
 
 rm(phylo, genera, shrub.list, tree.list, sp1, sp2, sp.list, id, id1)
-save.image("workspaces/tree-shrub-phylo.RData")
+save.image("tree-shrub-phylo.RData")

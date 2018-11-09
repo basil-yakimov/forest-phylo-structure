@@ -1,4 +1,4 @@
-load('workspaces/herb-phylo.RData')
+load('herb-phylo.RData')
 
 library(ape)
 library(picante)
@@ -38,15 +38,14 @@ hses.a.is <- ses.mpd(ha, dist.mat, null.model = "independentswap", runs = 999, i
 hses.a.ts <- ses.mpd(ha, dist.mat, null.model = "trialswap", runs = 999, iterations = 1000, abundance.weighted = T)
 
 rm(my.add, my.bind.tip)
-save.image("workspaces/herb-ses.RData")
+save.image("herb-phylo-analysis-ses.RData")
 
 #_____________________________________________________________________
 
-load("workspaces/herb-ses.RData")
+plot(1:96, hses.tl$mpd.obs)
+plot(1:96, hses.tl$mpd.obs.z)
 
-hgt <- read.table("data/hgt.txt")[[1]]
-
-h.ses <- data.frame(hgt, taxa.labels = hses.tl$mpd.obs.z,
+h.ses <- data.frame(n = 1:96, taxa.labels = hses.tl$mpd.obs.z,
                     richness = hses.r$mpd.obs.z,
                     frequency = hses.f$mpd.obs.z,
                     sample.pool = hses.sp$mpd.obs.z,
@@ -61,21 +60,31 @@ h.ses <- data.frame(hgt, taxa.labels = hses.tl$mpd.obs.z,
                     independentswap.a = hses.a.is$mpd.obs.z,
                     trialswap.a = hses.a.ts$mpd.obs.z)
 
-h.ses.p <- data.frame(hgt, taxa.labels = hses.tl$mpd.obs.p,
-                      richness = hses.r$mpd.obs.p,
-                      frequency = hses.f$mpd.obs.p,
-                      sample.pool = hses.sp$mpd.obs.p,
-                      phylogeny.pool = hses.pp$mpd.obs.p,
-                      independentswap = hses.is$mpd.obs.p,
-                      trialswap = hses.ts$mpd.obs.p,
-                      taxa.labels.a = hses.a.tl$mpd.obs.p, 
-                      richness.a = hses.a.r$mpd.obs.p,
-                      frequency.a = hses.a.f$mpd.obs.p,
-                      sample.pool.a = hses.a.sp$mpd.obs.p,
-                      phylogeny.pool.a = hses.a.pp$mpd.obs.p,
-                      independentswap.a = hses.a.is$mpd.obs.p,
-                      trialswap.a = hses.a.ts$mpd.obs.p)
-rm(list = ls(pattern = "hses"), dist.mat, tree)
-save(h.ses, h.ses.p, file = "workspaces/herb-ses.rda")
+hses.tl.m <- lm(taxa.labels ~ n, h.ses)
+plot(h.ses$n, h.ses$taxa.labels)
+abline(hses.tl.m)
+
+shapiro.test(resid(hses.tl.m))
+library(nortest)
+lillie.test(resid(hses.tl.m))
+ad.test(resid(hses.tl.m))
+
+#_____________________________________________________________________
+
+library(car)
+ncvTest(hses.tl.m)
+
+cor(h.ses$n, h.ses$taxa.labels)
+cor.test(h.ses$n, h.ses$taxa.labels)
+
+cor(h.ses$n, h.ses$taxa.labels, method = "spearman")
+cor.test(h.ses$n, h.ses$taxa.labels, method = "spearman")
+
+cor(h.ses$n, h.ses$taxa.labels, method = "kendall")
+cor.test(h.ses$n, h.ses$taxa.labels, method = "kendall")
+
+save.image("herb-phylo-analysis.RData")
+
+ses <- ses.mpd(ha, cophenetic(tree), null.model = "taxa.labels", runs = 999, iterations = 1000)
 
 
