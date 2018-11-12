@@ -1,58 +1,96 @@
-load("workspaces/tree-ses.RData")
-
-#tses.tl.m <- lm(taxa.labels ~ hgt, t.ses)
-#plot(t.ses$hgt, t.ses$taxa.labels, pch = 21, bg = "steelblue")
-#abline(tses.tl.m)
-#title(main = paste0("taxa.labels - ", round(pe$estimate, dig = 3), " - ", round(pe$p.value, 3),
-#                    round(sp$estimate, dig = 3), " - ", round(sp$p.value, 3),
-#                    round(ke$estimate, dig = 3), " - ", round(ke$p.value, 3)))
+load("clean.data/phylo-ses.rda")
+hgt <- read.table("raw.data/hgt.txt")[[1]]
 
 #_____________________________________________________________________
 
-t.coef.pe <- c()
-t.coef.sp <- c()
-t.coef.ke <- c()
-t.coef.p.pe <- c()
-t.coef.p.sp <- c()
-t.coef.p.ke <- c()
 
-pdf("output/trees-coef.pdf", 22, 7)
+pdf("figures/tree-regs.pdf", 7, 22)
 
-old.par <- par(no.readonly = TRUE)
-par(mfrow = c(2,7))
+op <- par(mfcol = c(7,2))
 
-for (i in 2:ncol(t.ses)){
-  a <- t.ses[, i]
-  plot(t.ses$hgt, a,  pch = 21, bg = "steelblue")
-  model <- lm(a ~ t.ses$hgt)
-  abline(model)
+for (i in 2:ncol(t.ses.z)){
+  NRI <- -t.ses.z[, i]
+  plot(hgt, NRI,  pch = 21, bg = "tomato", xlab = "altitude")
   
-  pe <- cor.test(t.ses$hgt[!is.na(a)], a[!is.na(a)])
-  sp <- cor.test(t.ses$hgt[!is.na(a)], a[!is.na(a)], method = "spearman")
-  ke <- cor.test(t.ses$hgt[!is.na(a)], a[!is.na(a)], method = "kendall")
+  sp <- cor.test(hgt, NRI, method = "spearman", use = "complete")
   
-  title(main = paste0(names(t.ses)[i], " - ",
-                      round(pe$estimate, dig = 3), " - ", round(pe$p.value, 3),
-                      round(sp$estimate, dig = 3), " - ", round(sp$p.value, 3),
-                      round(ke$estimate, dig = 3), " - ", round(ke$p.value, 3)))
+  sig <- t.ses.p[, i] < 0.05 | t.ses.p[, i] > 0.95
+  points(hgt[sig], NRI[sig],  pch = 21, bg = "darkred")
   
-  t.coef.pe <- c(t.coef.pe, pe$estimate)
-  t.coef.sp <- c(t.coef.sp, sp$estimate)
-  t.coef.ke <- c(t.coef.ke, ke$estimate)
-  t.coef.p.pe <- c(t.coef.p.pe, pe$p.value)
-  t.coef.p.sp <- c(t.coef.p.sp, sp$p.value)
-  t.coef.p.ke <- c(t.coef.p.ke, ke$p.value)
+  if (sp$p.value < 0.05)
+  {
+    model <- lm(NRI ~ hgt)
+    abline(model)
+  }
+  text("topleft", labels = "txt")
+  legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
+  
+  title(main = paste0(names(t.ses.z)[i]))
 }
 
-par(old.par)
+par(op)
 
 dev.off()
 
-t.coef <- data.frame(null.model = names(t.ses)[2:ncol(t.ses)], pearson.cor.coef = t.coef.pe,
-                     pearson.p.value = t.coef.p.pe,
-                     spearman.cor.coef = t.coef.sp,
-                     spearman.p.value = t.coef.p.sp,
-                     kendall.cor.coef = t.coef.ke,
-                     kendall.p.value = t.coef.p.ke)
 
-save(t.coef, file = "workspaces/tree-coef.rda")
+#_____________________________________________________________________
+
+
+pdf("figures/shrub-regs.pdf", 7, 22)
+
+op <- par(mfcol = c(7,2))
+
+for (i in 2:ncol(t.ses.z)){
+  NRI <- -s.ses.z[, i]
+  plot(hgt, NRI,  pch = 21, bg = "skyblue", xlab = "altitude")
+  
+  sp <- cor.test(hgt, NRI, method = "spearman", use = "complete")
+  
+  sig <- s.ses.p[, i] < 0.05 | s.ses.p[, i] > 0.95
+  points(hgt[sig], NRI[sig],  pch = 21, bg = "darkblue")
+  
+  if (sp$p.value < 0.05)
+  {
+    model <- lm(NRI ~ hgt)
+    abline(model)
+  }
+  text("topleft", labels = "txt")
+  legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
+  
+  title(main = paste0(names(s.ses.z)[i]))
+}
+
+par(op)
+
+dev.off()
+
+#_____________________________________________________________________
+
+
+pdf("figures/herb-regs.pdf", 7, 22)
+
+op <- par(mfcol = c(7,2))
+
+for (i in 2:ncol(t.ses.z)){
+  NRI <- -h.ses.z[, i]
+  plot(hgt, NRI,  pch = 21, bg = "limegreen", xlab = "altitude")
+  
+  sp <- cor.test(hgt, NRI, method = "spearman", use = "complete")
+  
+  sig <- h.ses.p[, i] < 0.05 | h.ses.p[, i] > 0.95
+  points(hgt[sig], NRI[sig],  pch = 21, bg = "darkgreen")
+  
+  if (sp$p.value < 0.05)
+  {
+    model <- lm(NRI ~ hgt)
+    abline(model)
+  }
+  text("topleft", labels = "txt")
+  legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
+  
+  title(main = paste0(names(h.ses.z)[i]))
+}
+
+par(op)
+
+dev.off()

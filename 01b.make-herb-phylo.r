@@ -1,13 +1,13 @@
 library(ape)
-phylo <- read.tree("data/Vascular_Plants_rooted.dated.tre")
+phylo <- read.tree("raw.data/Vascular_Plants_rooted.dated.tre")
 
 library(readxl)
-sp3 <- read_excel("data/Forest_data.xlsx", sheet = 6, range = "A2:A194", col_names = F)[[1]]
+sp3 <- read_excel("raw.data/Forest_data.xlsx", sheet = 6, range = "A2:A194", col_names = F)[[1]]
 
 herb.list <- sapply(strsplit(sp3, " "), function(x) paste(x[1], x[2]))
 herb.list <- sub(" ", "_", herb.list)
 
-ha <- read_excel("data/Forest_data.xlsx", sheet = 6, range = "B2:CS194", col_names = F)
+ha <- read_excel("raw.data/Forest_data.xlsx", sheet = 6, range = "B2:CS194", col_names = F)
 ha <- t(ha)
 colnames(ha) <- herb.list
 ha <- ha[, colSums(ha) > 0]
@@ -17,6 +17,7 @@ source("R/addition-tools.r")
 
 #_______________________________________________________
 
+# remove non-species taxons
 ha$Asclepiadaceae_Sp. <- NULL
 ha$Caryophyllaceae_Sp. <- NULL
 ha$Compositae_Sp. <- NULL
@@ -45,9 +46,9 @@ sp.list3 <- sp.list2[-id2]
 
 #_______________________________________________________
 
-grep("Bidens*", phylo$tip.label, value = T)
+#grep("Bidens*", phylo$tip.label, value = T)
 
-#Misprints
+# misprints
 colnames(ha)[colnames(ha) == "Leibitzia_anandria"] <- "Leibnitzia_anandria"
 colnames(ha)[colnames(ha) == "Impatiens_noli.tangere"] <- "Impatiens_noli"
 colnames(ha)[colnames(ha) == "Lilium_lanciforlium"] <- "Lilium_lancifolium"
@@ -57,13 +58,14 @@ colnames(ha)[colnames(ha) == "Tataxacum_mongolicum"] <- "Taraxacum_mongolicum"
 colnames(ha)[colnames(ha) == "Oxyropis_coerulea"] <- "Oxytropis_caerulea"
 colnames(ha)[colnames(ha) == "Patrinia_scabiosaefolia"] <- "Patrinia_scabiosifolia"
 
+# make list of monotypic genera
 one_sp <- c()
 for (ii in 1:length(sp.list3)){
   #  one_sp <- c(one_sp, grep(names(g[as.vector(g) == 1])[ii], sp.list3, value = T))
   one_sp <- c(one_sp, grep(gsub("\\_.*","", sp.list3)[ii], names(g[as.vector(g) == 1]), value = T))
 }
 
-#Monotypic genera
+# monotypic genera (add our species to the phylo)
 phylo$tip.label[phylo$tip.label == "Amphicarpaea_bracteata"] <- "Amphicarpaea_trisperma"
 phylo$tip.label[phylo$tip.label == "Aquilegia_viscosa"] <- "Aquilegia_yabeana"
 phylo$tip.label[phylo$tip.label == "Bidens_mitis"] <- "Bidens_parviflora"
@@ -93,7 +95,7 @@ phylo$tip.label[phylo$tip.label == "Thesium_chinense"] <- "Thesium_refractum"
 phylo$tip.label[phylo$tip.label == "Gentiana_lutea"] <- "Tripterospermum_chinense"
 phylo$tip.label[phylo$tip.label == "Veronica_lanceolata"] <- "Veronica_linariifolia"
 
-#Polytypic genera
+# polytypic genera (add polytomies of underidentified species)
 phylo <- my.add(phylo, "Astragalus_sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Iris_Sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Rubus_Sp.", tol = 1e-6)
@@ -101,44 +103,32 @@ phylo <- my.add(phylo, "Taraxacum_Sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Vicia_Sp.", tol = 1e-6)
 phylo <- my.add(phylo, "Viola_Sp.", tol = 1e-6)
 
-#Closest species
+# closest species
 phylo$tip.label[phylo$tip.label == "Aconitum_sinomontanum"] <- "Aconitum_barbatum" #doi.org/10.1371/journal.pone.0171038
-
 phylo$tip.label[phylo$tip.label == "Adenophora_triphylla"] <- "Adenophora_divaricata" #DOI: 10.1600/036364408783887465
 phylo$tip.label[phylo$tip.label == "Adenophora_stricta"] <- "Adenophora_polyantha"
 phylo$tip.label[phylo$tip.label == "Adenophora_verticillata"] <- "Adenophora_wawreana"
-
 phylo$tip.label[phylo$tip.label == "Artemisia_laciniata"] <- "Artemisia_tanacetifolia"  #Smith, 2011
-
 phylo$tip.label[phylo$tip.label == "Clematis_villosa"] <- "Clematis_ochotensis" #Smith, 2011
-
 phylo$tip.label[phylo$tip.label == "Ixeris_repens"] <- "Ixeris_polycephala" #doi.org/10.1508/cytologia.FujiiJubilaei.188
-
 phylo$tip.label[phylo$tip.label == "Patrinia_heterophylla"] <- "Patrinia_scabra" #Smith, 2011
-
 phylo$tip.label[phylo$tip.label == "Polygonatum cirrhifolium"] <- "Polygonatum_sibiricum" #Smith, 2011
-
 phylo$tip.label[phylo$tip.label == "Polygonum_weyrichii"] <- "Polygonum_bistorta" #Smith, 2011
-
 phylo$tip.label[phylo$tip.label == "Prenanthes_autumnalis"] <- "Prenanthes_tatarinowii"
-
 phylo$tip.label[phylo$tip.label == "Vicia_unijuga"] <- "Vicia_pseudo-orobus" #doi.org/10.1186/1471-2148-12-250
-
 phylo$tip.label[phylo$tip.label == "Viola_lactiflora"] <- "Viola_yezoensis"
 
-#
-
-ha$Prenanthes_tatarinowii <- ha$Prenanthes_macrophylla + ha$Prenanthes_tatarinowii #the same species
+# special cases
+ha$Prenanthes_tatarinowii <- ha$Prenanthes_macrophylla + ha$Prenanthes_tatarinowii # the same species
 ha$Prenanthes_macrophylla <- NULL
 
-ha$Bupleurum_chinense <- ha$Bupleurum_chinense + ha$Bupleurum_chinense.1 #Subspecies
+ha$Bupleurum_chinense <- ha$Bupleurum_chinense + ha$Bupleurum_chinense.1 # subspecies
 ha$Bupleurum_chinense.1 <- NULL
 
 ha$Thalictrum_minus <- ha$Thalictrum_minus + ha$Thalictrum_var.
 ha$Thalictrum_var. <- NULL
 
-#The rest of species
-
+# the rest of species (simply add politonies to corresponding genera)
 sp.list2 <- colnames(ha)
 id2 <- which(sp.list2 %in% phylo$tip.label)
 sp.list3 <- sp.list2[-id2]
@@ -151,12 +141,15 @@ colnames(ha)[colnames(ha) == "Denfranthema_chanetii"] <- "Dendranthema_chanetii"
 phylo <- my.add(phylo, "Dendranthema_chanetii", tol = 1e-6)
 
 #_______________________________________________________
-
+# final pruning of the phylo
 sp.list2 <- colnames(ha)
 id <- which(phylo$tip.label %in% sp.list2)
-tree <- drop.tip(phylo, phylo$tip.label[-id])
-plot(tree, cex = 0.7)
+herb.tree <- drop.tip(phylo, phylo$tip.label[-id])
+
+# plot final tree
+plot(herb.tree, cex = 0.7)
 axisPhylo()
 
-rm(g, genera, herb.list, id, id2, ii, one_sp, sp.list2, sp.list3, sp3)
-save.image("workspaces/herb-phylo.RData")
+# save results
+save(herb.tree, file = "clean.data/herb-phylo.rda")
+save(ha, file = "clean.data/herb-abund.rda")
