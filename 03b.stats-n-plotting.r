@@ -25,9 +25,6 @@ for (i in 2:ncol(t.ses.z)){
   text("topleft", labels = "txt")
   legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
   
-  w <- wilcox.test(NTI, mu = 0)
-  legend("topright", legend = round(w$p.value, 3), bty = "n")
-  
   title(main = paste0(names(t.ses.z)[i]))
 }
 
