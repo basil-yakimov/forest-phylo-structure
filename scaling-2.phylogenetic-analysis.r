@@ -7,9 +7,7 @@ load("clean.data/herb-phylo.rda")
 wood.mat <- cophenetic(wood.tree)
 herb.mat <- cophenetic(herb.tree)
 
-load("clean.data/tree-abund.rda")
-load("clean.data/shrub-abund.rda")
-load("clean.data/herb-abund.rda")
+load("clean.data/scaling-2-abund.rda")
 
 #---tree layer analysis ignoring abundances with various null models---#
 
@@ -75,8 +73,14 @@ h.ses.a.ts <- ses.mpd(ha, herb.mat, null.model = "trialswap", runs = 999, iterat
 #--- re-pack and save results ---#
 
 hgt <- read.table("raw.data/hgt.txt")[[1]]
+count <- c(2:11, 13:20, 22:33, 35:44, 46:58, 60:66, 68:76, 78:87, 89:96)
+hgt2 <- c()
+for (ii in count){
+  hgt2 <- c(hgt2, mean(hgt[ii-1], hgt[ii]))
+}
+hgt <- hgt2
 
-t.ses.z <- data.frame(hgt = hgt, 
+t.ses.z2 <- data.frame(hgt = hgt, 
                       taxa.labels = t.ses.tl$mpd.obs.z,
                       richness = t.ses.r$mpd.obs.z,
                       frequency = t.ses.f$mpd.obs.z,
@@ -92,7 +96,7 @@ t.ses.z <- data.frame(hgt = hgt,
                       independentswap.a = t.ses.a.is$mpd.obs.z,
                       trialswap.a = t.ses.a.ts$mpd.obs.z)
 
-t.ses.p <- data.frame(hgt = hgt, 
+t.ses.p2 <- data.frame(hgt = hgt, 
                       taxa.labels = t.ses.tl$mpd.obs.p,
                       richness = t.ses.r$mpd.obs.p,
                       frequency = t.ses.f$mpd.obs.p,
@@ -108,7 +112,7 @@ t.ses.p <- data.frame(hgt = hgt,
                       independentswap.a = t.ses.a.is$mpd.obs.p,
                       trialswap.a = t.ses.a.ts$mpd.obs.p)
 
-s.ses.z <- data.frame(hgt = hgt, 
+s.ses.z2 <- data.frame(hgt = hgt, 
                       taxa.labels = s.ses.tl$mpd.obs.z,
                       richness = s.ses.r$mpd.obs.z,
                       frequency = s.ses.f$mpd.obs.z,
@@ -124,7 +128,7 @@ s.ses.z <- data.frame(hgt = hgt,
                       independentswap.a = s.ses.a.is$mpd.obs.z,
                       trialswap.a = s.ses.a.ts$mpd.obs.z)
 
-s.ses.p <- data.frame(hgt = hgt, 
+s.ses.p2 <- data.frame(hgt = hgt, 
                       taxa.labels = s.ses.tl$mpd.obs.p,
                       richness = s.ses.r$mpd.obs.p,
                       frequency = s.ses.f$mpd.obs.p,
@@ -140,7 +144,7 @@ s.ses.p <- data.frame(hgt = hgt,
                       independentswap.a = s.ses.a.is$mpd.obs.p,
                       trialswap.a = s.ses.a.ts$mpd.obs.p)
 
-h.ses.z <- data.frame(hgt = hgt, 
+h.ses.z2 <- data.frame(hgt = hgt, 
                       taxa.labels = h.ses.tl$mpd.obs.z,
                       richness = h.ses.r$mpd.obs.z,
                       frequency = h.ses.f$mpd.obs.z,
@@ -156,7 +160,7 @@ h.ses.z <- data.frame(hgt = hgt,
                       independentswap.a = h.ses.a.is$mpd.obs.z,
                       trialswap.a = h.ses.a.ts$mpd.obs.z)
 
-h.ses.p <- data.frame(hgt = hgt, 
+h.ses.p2 <- data.frame(hgt = hgt, 
                       taxa.labels = h.ses.tl$mpd.obs.p,
                       richness = h.ses.r$mpd.obs.p,
                       frequency = h.ses.f$mpd.obs.p,
@@ -172,4 +176,4 @@ h.ses.p <- data.frame(hgt = hgt,
                       independentswap.a = h.ses.a.is$mpd.obs.p,
                       trialswap.a = h.ses.a.ts$mpd.obs.p)
 
-save(t.ses.z, t.ses.p, s.ses.z, s.ses.p, h.ses.z, h.ses.p, file = "clean.data/phylo-ses.rda")
+save(t.ses.z2, t.ses.p2, s.ses.z2, s.ses.p2, h.ses.z2, h.ses.p2, file = "clean.data/scaling-2-phylo-ses.rda")
