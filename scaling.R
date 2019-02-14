@@ -8,7 +8,7 @@ hgt <- read.table("raw.data/hgt.txt")[[1]]
 
 #1110-1180,1190-1255, 1260-1338, 1344-1408, 1414-1496, 1504-1552, 1558-1616, 1622-1682, and 1687-1734
 h <- row.names(ta)
-names(h) <- hgt
+names(h) <- hgt #looking on the numbers of sites
 count <- c(2:11, 13:20, 22:33, 35:44, 46:58, 60:66, 68:76, 78:87, 89:96)
 
 ta2 <- ta
