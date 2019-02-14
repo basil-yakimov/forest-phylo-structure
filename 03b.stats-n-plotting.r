@@ -25,9 +25,12 @@ for (i in 2:ncol(t.ses.z)){
   text("topleft", labels = "txt")
   legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
   
+<<<<<<< HEAD
   w <- wilcox.test(NTI, mu = 0)
   legend("topright", legend = round(w$p.value, 3), bty = "n")
   
+=======
+>>>>>>> 78a3279f9a160744104c6cffe6bc0ea02c6fec6a
   title(main = paste0(names(t.ses.z)[i]))
 }
 
@@ -60,9 +63,12 @@ for (i in 2:ncol(t.ses.z)){
   text("topleft", labels = "txt")
   legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
   
+<<<<<<< HEAD
   w <- wilcox.test(NTI, mu = 0)
   legend("topright", legend = round(w$p.value, 3), bty = "n")
   
+=======
+>>>>>>> 78a3279f9a160744104c6cffe6bc0ea02c6fec6a
   title(main = paste0(names(s.ses.z)[i]))
 }
 
@@ -94,9 +100,12 @@ for (i in 2:ncol(t.ses.z)){
   text("topleft", labels = "txt")
   legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
   
+<<<<<<< HEAD
   w <- wilcox.test(NTI, mu = 0)
   legend("topright", legend = round(w$p.value, 3), bty = "n")
   
+=======
+>>>>>>> 78a3279f9a160744104c6cffe6bc0ea02c6fec6a
   title(main = paste0(names(h.ses.z)[i]))
 }
 
