@@ -17,16 +17,15 @@ for (i in 2:ncol(t.ses.z)){
   sig <- t.ses.p[, i] < 0.05 | t.ses.p[, i] > 0.95
   points(hgt[sig], NRI[sig],  pch = 21, bg = "darkred")
   
+  model <- lm(NRI ~ hgt)
   if (sp$p.value < 0.05)
   {
-    model <- lm(NRI ~ hgt)
     abline(model)
   }
+  legend("topright", legend = round(coef(model)[2]*100, 4), bty = "n")
+  
   text("topleft", labels = "txt")
   legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
-  
-  w <- wilcox.test(NRI, mu = 0)
-  legend("topright", legend = round(w$p.value, 3), bty = "n")
   
   title(main = paste0(names(t.ses.z)[i]))
 }
@@ -52,16 +51,15 @@ for (i in 2:ncol(t.ses.z)){
   sig <- s.ses.p[, i] < 0.05 | s.ses.p[, i] > 0.95
   points(hgt[sig], NRI[sig],  pch = 21, bg = "darkblue")
   
+  model <- lm(NRI ~ hgt)
   if (sp$p.value < 0.05)
   {
-    model <- lm(NRI ~ hgt)
     abline(model)
   }
+  legend("topright", legend = round(coef(model)[2]*100, 4), bty = "n")
+  
   text("topleft", labels = "txt")
   legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
-  
-  w <- wilcox.test(NRI, mu = 0)
-  legend("topright", legend = round(w$p.value, 3), bty = "n")
   
   title(main = paste0(names(s.ses.z)[i]))
 }
@@ -86,16 +84,15 @@ for (i in 2:ncol(t.ses.z)){
   sig <- h.ses.p[, i] < 0.05 | h.ses.p[, i] > 0.95
   points(hgt[sig], NRI[sig],  pch = 21, bg = "darkgreen")
   
+  model <- lm(NRI ~ hgt)
   if (sp$p.value < 0.05)
   {
-    model <- lm(NRI ~ hgt)
     abline(model)
   }
+  legend("topright", legend = round(coef(model)[2]*100, 4), bty = "n")
+  
   text("topleft", labels = "txt")
   legend("topleft", legend = bquote(rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)})), bty = "n")
-  
-  w <- wilcox.test(NRI, mu = 0)
-  legend("topright", legend = round(w$p.value, 3), bty = "n")
   
   title(main = paste0(names(h.ses.z)[i]))
 }
