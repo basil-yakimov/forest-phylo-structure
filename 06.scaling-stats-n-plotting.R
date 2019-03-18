@@ -32,6 +32,11 @@ for (jj in 1:3){
     
     cor_coef[jj, ii] <- cor(hgt, NRI, method = "spearman")
     det_coef[jj, ii] <- cor(hgt, NRI)^2
+    legend("topright", legend = bquote("R^2" == .({round(cor(hgt, NRI)^2, 3)})), bty = "n")
+    
+    if (jj == 1) {title(c("Tree layer ", ii))}
+    if (jj == 2) {title(c("Shrub layer ", ii))}
+    if (jj == 3) {title(c("Herb layer ", ii))}
   }
 }
 
