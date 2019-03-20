@@ -64,3 +64,30 @@ for (j in 1:3){
 
 
 dev.off()
+
+#_____________________________________________________________________
+
+png("figures/mean-nri-sc.png", 3000, 1000, pointsize = 75)
+
+tt <- c("Tree layer", "Shrub layer", "Herb layer")
+
+op <- par(mfcol = c(1,3))
+
+for (jj in 1:3){
+  meanNRI <- NULL
+  
+  for (ii in 1:20){
+   meanNRI <- c(meanNRI, mean(-s[[jj]][[ii]][, 1]))
+  }
+  
+  scaling <- 1:length(meanNRI)
+  plot(scaling, meanNRI, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
+  title(tt[jj])
+  
+  model <- lm(meanNRI ~ scaling)
+  abline(model)
+  
+}
+
+
+dev.off()
