@@ -82,6 +82,18 @@ for (jj in 1:3){
    meanNRI <- c(meanNRI, mean(-s[[jj]][[ii]][, 1]))
    meanNRI_low <- c(meanNRI_low, mean(-s[[jj]][[ii]][1:(length(s[[jj]][[ii]][, 1])%/%2), 1]))
    meanNRI_high <- c(meanNRI_high, mean(-s[[jj]][[ii]][(1+length(s[[jj]][[ii]][, 1])%/%2):(length(s[[jj]][[ii]][, 1])), 1]))
+
+png("figures/mean-nri-sc.png", 3000, 1000, pointsize = 75)
+
+tt <- c("Tree layer", "Shrub layer", "Herb layer")
+
+op <- par(mfcol = c(1,3))
+
+for (jj in 1:3){
+  meanNRI <- NULL
+  
+  for (ii in 1:20){
+   meanNRI <- c(meanNRI, mean(-s[[jj]][[ii]][, 1]))
   }
   
   scaling <- 1:length(meanNRI)
@@ -132,5 +144,9 @@ for (jj in 1:3){
   plot(scaling, meanNRI_high, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
   
 }
+
+}
+
+
 
 dev.off()
