@@ -100,6 +100,26 @@ png("figures/mean-nri-sc.png", 4000, 2500, pointsize = 75)
 
 op <- par(mfcol = c(2,3))
 
+  }
+  
+  scaling <- 1:length(meanNRI)
+  plot(scaling, meanNRI, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
+  title(tt[jj])
+  
+  model <- lm(meanNRI ~ scaling)
+  if (anova(model)[1, 5] < 0.05) abline(model)
+  
+  plot(scaling, meanNRI_low, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
+  model <- lm(meanNRI_low ~ scaling)
+  if (anova(model)[1, 5] < 0.05) abline(model)
+
+  plot(scaling, meanNRI_high, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
+  model <- lm(meanNRI_high ~ scaling)
+  if (anova(model)[1, 5] < 0.05) abline(model)
+  
+}
+
+
 meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z"], na.rm = T))
 meanNRIa <- sapply(ta_sc_ses, function(x) -mean(x[, "z.a"], na.rm = T))
 
@@ -124,6 +144,7 @@ model <- lm(meanNRIa ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 
+
 meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z"], na.rm = T))
 meanNRIa <- sapply(ha_sc_ses, function(x) -mean(x[, "z.a"], na.rm = T))
 
@@ -136,3 +157,33 @@ model <- lm(meanNRIa ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 dev.off()
+
+for (jj in 1:3){
+  meanNRI <- NULL
+  meanNRI_low <- NULL
+  meanNRI_high <- NULL
+  
+  for (ii in 1:20){
+    meanNRI <- c(meanNRI, mean(-s[[jj]][[ii]][, 1]))
+    meanNRI_low <- c(meanNRI_low, mean(-s[[jj]][[ii]][1:(length(s[[jj]][[ii]][, 1])%/%2), 1]))
+    meanNRI_high <- c(meanNRI_high, mean(-s[[jj]][[ii]][(1+length(s[[jj]][[ii]][, 1])%/%2):(length(s[[jj]][[ii]][, 1])), 1]))
+  }
+  
+  scaling <- 1:length(meanNRI)
+  plot(scaling, meanNRI, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
+  title(tt[jj])
+  
+  model <- lm(meanNRI ~ scaling)
+  if (anova(model)[1, 5] < 0.05) abline(model)
+  
+  plot(scaling, meanNRI_low, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
+  model <- lm(meanNRI_low ~ scaling)
+  if (anova(model)[1, 5] < 0.05) abline(model)
+  
+  plot(scaling, meanNRI_high, pch = 21, bg = rgb(0.7, (jj/4), 0.2, 1))
+  model <- lm(meanNRI_high ~ scaling)
+  if (anova(model)[1, 5] < 0.05) abline(model)
+}
+
+dev.off()
+
