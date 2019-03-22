@@ -7,67 +7,28 @@ load("clean.data/herb-phylo.rda")
 wood.mat <- cophenetic(wood.tree)
 herb.mat <- cophenetic(herb.tree)
 
-load("clean.data/scaling-abund.rda")
-
-
-#________________________________________________
-
-s <- vector(mode = "list", length = 3)
-for (ii in 1:3){
-  
-  g <- vector(mode = "list", length = 20)
-  
-  for (jj in 1:20){
-    df <- out_tot[[ii]][[jj]]
-    
-    if (ii == 3){
-      ses <- ses.mpd(df, herb.mat, null.model = "richness", runs = 999, iterations = 1000)
-    } else {
-      ses <- ses.mpd(df, wood.mat, null.model = "richness", runs = 999, iterations = 1000)
-    }
-    m <- cbind(ses$mpd.obs.z, ses$mpd.obs.p)
-    colnames(m) <- c("mpd.obs.z", "mpd.obs.p")
-    g[[jj]] <- m
-    
-  }
-  
-  s[[ii]] <- g
-}
-
-save(s, file = "clean.data/scaling-phylo-ses.rda")
+load("clean.data/scaling.rda")
 
 #________________________________________________
 
-rm(list = ls())
+ta_sc_ses <- sa_sc_ses <- ha_sc_ses <- vector(mode = "list", length = 20)
 
-load("clean.data/wood-phylo.rda")
-load("clean.data/herb-phylo.rda")
-
-wood.mat <- cophenetic(wood.tree)
-herb.mat <- cophenetic(herb.tree)
-
-load("clean.data/scaling-abund.rda")
-
-s <- vector(mode = "list", length = 3)
-for (ii in 1:3){
+for (jj in 1:20)
+{
+  ses <- ses.mpd(ta_sc[[jj]], wood.mat, null.model = "richness")
+  ses.a <- ses.mpd(ta_sc[[jj]], wood.mat, null.model = "richness", abundance.weighted = T)
+  ta_sc_ses[[jj]] <- cbind(z = ses$mpd.obs.z, p = ses$mpd.obs.p,
+                           z.a = ses.a$mpd.obs.z, p.a = ses.a$mpd.obs.p)
   
-  g <- vector(mode = "list", length = 20)
+  ses <- ses.mpd(sa_sc[[jj]], wood.mat, null.model = "richness")
+  ses.a <- ses.mpd(sa_sc[[jj]], wood.mat, null.model = "richness", abundance.weighted = T)
+  sa_sc_ses[[jj]] <- cbind(z = ses$mpd.obs.z, p = ses$mpd.obs.p,
+                           z.a = ses.a$mpd.obs.z, p.a = ses.a$mpd.obs.p)
   
-  for (jj in 1:20){
-    df <- out_tot[[ii]][[jj]]
-    
-    if (ii == 3){
-      ses <- ses.mpd(df, herb.mat, null.model = "richness", runs = 999, iterations = 1000, abundance.weighted = T)
-    } else {
-      ses <- ses.mpd(df, wood.mat, null.model = "richness", runs = 999, iterations = 1000, abundance.weighted = T)
-    }
-    m <- cbind(ses$mpd.obs.z, ses$mpd.obs.p)
-    colnames(m) <- c("mpd.obs.z", "mpd.obs.p")
-    g[[jj]] <- m
-    
-  }
+  ses <- ses.mpd(ha_sc[[jj]], herb.mat, null.model = "richness")
+  ses.a <- ses.mpd(ha_sc[[jj]], herb.mat, null.model = "richness", abundance.weighted = T)
+  ha_sc_ses[[jj]] <- cbind(z = ses$mpd.obs.z, p = ses$mpd.obs.p,
+                           z.a = ses.a$mpd.obs.z, p.a = ses.a$mpd.obs.p)
+}  
   
-  s[[ii]] <- g
-}
-
-save(s, file = "clean.data/scaling-phylo-ses-abund.rda")
+save(ta_sc_ses, sa_sc_ses, ha_sc_ses, file = "clean.data/scaling-ses.rda")
