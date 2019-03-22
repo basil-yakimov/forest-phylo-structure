@@ -4,13 +4,6 @@ load("clean.data/herb-abund.rda")
 
 hgt <- read.table("raw.data/hgt.txt")[[1]]
 
-
-a <- vector(mode = "list", length = 3)
-a[[1]] <- ta
-a[[2]] <- sa
-a[[3]] <- ha
-
-
 #________________________________________
 
 #considering the boundaries between transects
@@ -21,41 +14,35 @@ a[[3]] <- ha
 
 #________________________________________
 
-out_tot <- vector(mode = "list", length = 3)
+sc <- 1:20
 
-for (i in 1:3){
-  dt <- a[[i]]
+hgt_sc <- ta_sc <- sa_sc <- ha_sc <- vector(mode = "list", length = length(sc)) 
+
+for (jj in 1:length(sc))
+{
+  num <- 96 %/% sc[jj]
   
-  sc <- 1:20
+  dt <- matrix(0, nrow = num, ncol = ncol(ta))
+  ds <- matrix(0, nrow = num, ncol = ncol(sa))
+  dh <- matrix(0, nrow = num, ncol = ncol(ha))
+  dhgt <- rep(NA, num)
   
-  out2 <- vector(mode = "list", length = length(sc))
-  hgt_sc <- vector(mode = "list", length = 7) 
+  colnames(dt) <- colnames(ta)
+  colnames(ds) <- colnames(sa)
+  colnames(dh) <- colnames(ha)
   
-  for (jj in 1:length(sc))
+  for (ii in 1:num)
   {
-    dd <- matrix(0, nrow = (96-sc[jj]+1), ncol = ncol(dt))
-    h <- NULL
-    del <- NULL
-    for (ii in 1:(96-sc[jj]+1))
-    {
-      dd[ii, ] <- colSums(dt[(ii):(ii+sc[jj]-1), ])
-      del <- c(del, ii %in% seq(1, 96, by = sc[jj]))
-    }
-    
-    for (ii in seq(1, 96-sc[jj]+1, by = sc[jj])){
-      h <- c(h, mean(hgt[(ii):(ii+sc[jj]-1)]))
-    }
-    
-    dd <- dd[del, ]
-    
-    hgt_sc[[jj]] <- h
-    
-    colnames(dd) <- colnames(dt)
-    out2[[jj]] <- dd
+    dt[ii, ] <- colSums(ta[((ii-1)*sc[jj]+1):(ii*sc[jj]), ])
+    ds[ii, ] <- colSums(sa[((ii-1)*sc[jj]+1):(ii*sc[jj]), ])
+    dh[ii, ] <- colSums(ha[((ii-1)*sc[jj]+1):(ii*sc[jj]), ])
+    dhgt[ii] <- mean(hgt[((ii-1)*sc[jj]+1):(ii*sc[jj])])
   }
   
-  out_tot[[i]] <- out2
+  ta_sc[[jj]] <- dt
+  sa_sc[[jj]] <- ds
+  ha_sc[[jj]] <- dh
+  hgt_sc[[jj]] <- dhgt
 }
 
-save(out_tot, file = "clean.data/scaling-abund.rda")
-save(hgt_sc, file = "clean.data/scaling-hgt.rda")
+save(hgt_sc, ta_sc, sa_sc, ha_sc, file = "clean.data/scaling.rda")
