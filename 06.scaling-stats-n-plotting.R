@@ -170,3 +170,80 @@ if (anova(model)[1, 5] < 0.05) abline(model)
 
 dev.off()
 
+
+
+#-----------------------------------------------------------------------------#
+
+png("figures/mean-nri-a-sc.png", 4000, 4000, pointsize = 75)
+
+op <- par(mfrow = c(4,3), mar = c(3, 3, 2, 0.5))
+
+meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.a.tl"], na.rm = T))
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: taxa labels")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.a.tl"], na.rm = T))
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: taxa labels")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.a.tl"], na.rm = T))
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: taxa labels")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+#---#
+
+meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.a.r"], na.rm = T))
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: richness")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.a.r"], na.rm = T))
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: richness")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.a.r"], na.rm = T))
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: richness")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+#---#
+
+meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.a.is"], na.ism = T))
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: ind. swap")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.a.is"], na.ism = T))
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: ind. swap")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.a.is"], na.ism = T))
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: ind. swap")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+#---#
+
+meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.a.ts"], na.ism = T))
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: trial swap")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.a.ts"], na.ism = T))
+
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: trial swap")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.a.ts"], na.ism = T))
+
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: trial swap")
+model <- lm(meanNRI ~ sc)
+if (anova(model)[1, 5] < 0.05) abline(model)
+
+dev.off()
