@@ -12,21 +12,21 @@ for (ii in 1:20)
 {
     hgt <- hgt_sc[[ii]]
     
-    NRI <- -ta_sc_ses[[ii]][, "z"]
+    NRI <- -ta_sc_ses[[ii]][, "z.is"]
     plot(hgt, NRI,  pch = 21, bg = "tomato", xlab = "altitude")
     model <- lm(NRI ~ hgt)
     if (anova(model)[1, 5] < 0.05) abline(model)
     sp <- cor.test(hgt, NRI, method = "spearman", use = "complete")
     title(bquote("Tree " ~ .(ii) ~ ": " ~ rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)}) ~ "; " ~ R^2 == .({round(cor(hgt, NRI, use = "complete")^2, 3)})))
 
-    NRI <- -sa_sc_ses[[ii]][, "z"]
+    NRI <- -sa_sc_ses[[ii]][, "z.is"]
     plot(hgt, NRI,  pch = 21, bg = "tomato", xlab = "altitude")
     model <- lm(NRI ~ hgt)
     if (anova(model)[1, 5] < 0.05) abline(model)
     sp <- cor.test(hgt, NRI, method = "spearman", use = "complete")
     title(bquote("Shrub " ~ .(ii) ~ ": " ~ rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)}) ~ "; " ~ R^2 == .({round(cor(hgt, NRI, use = "complete")^2, 3)})))
     
-    NRI <- -ha_sc_ses[[ii]][, "z"]
+    NRI <- -ha_sc_ses[[ii]][, "z.is"]
     plot(hgt, NRI,  pch = 21, bg = "tomato", xlab = "altitude")
     model <- lm(NRI ~ hgt)
     if (anova(model)[1, 5] < 0.05) abline(model)
@@ -44,21 +44,21 @@ for (ii in 1:20)
 {
   hgt <- hgt_sc[[ii]]
   
-  NRI <- -ta_sc_ses[[ii]][, "z.a"]
+  NRI <- -ta_sc_ses[[ii]][, "z.a.is"]
   plot(hgt, NRI,  pch = 21, bg = "tomato", xlab = "altitude")
   model <- lm(NRI ~ hgt)
   if (anova(model)[1, 5] < 0.05) abline(model)
   sp <- cor.test(hgt, NRI, method = "spearman", use = "complete")
   title(bquote("Tree " ~ .(ii) ~ ": " ~ rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)}) ~ "; " ~ R^2 == .({round(cor(hgt, NRI, use = "complete")^2, 3)})))
   
-  NRI <- -sa_sc_ses[[ii]][, "z"]
+  NRI <- -sa_sc_ses[[ii]][, "z.a.is"]
   plot(hgt, NRI,  pch = 21, bg = "tomato", xlab = "altitude")
   model <- lm(NRI ~ hgt)
   if (anova(model)[1, 5] < 0.05) abline(model)
   sp <- cor.test(hgt, NRI, method = "spearman", use = "complete")
   title(bquote("Shrub " ~ .(ii) ~ ": " ~ rho == .({round(sp$estimate, 3)}) ~ "; " ~ p == .({round(sp$p.value, 3)}) ~ "; " ~ R^2 == .({round(cor(hgt, NRI, use = "complete")^2, 3)})))
   
-  NRI <- -ha_sc_ses[[ii]][, "z"]
+  NRI <- -ha_sc_ses[[ii]][, "z.a.is"]
   plot(hgt, NRI,  pch = 21, bg = "tomato", xlab = "altitude")
   model <- lm(NRI ~ hgt)
   if (anova(model)[1, 5] < 0.05) abline(model)
@@ -73,26 +73,75 @@ dev.off()
 
 sc <- 1:20
 
-# png("figures/coef-sc.png", 3000, 4000, pointsize = 75)
-# 
-# op <- par(mfcol = c(3,2))
-# 
-# tt <- c("Tree layer", "Shrub layer", "Herb layer")
-# 
-# for (i in 1:3){
-#   scaling <- 1:length(cor_coef[i, ])
-#   plot(scaling, cor_coef[i, ], pch = 21, bg = "green3", ylab = "Correlation coefficient")
-#   title(tt[i])
-# }
-# 
-# for (j in 1:3){
-#   scaling <- 1:length(det_coef[j, ])
-#   plot(scaling, det_coef[j, ], pch = 21, bg = "blue3", ylab = "Coefficient of determination")
-#   title(tt[j])
-# }
-# 
-# 
-# dev.off()
+t.res <- sapply(sc, function(x) {
+  NRI <- -ta_sc_ses[[x]][, "z.is"]
+  hgt <- hgt_sc[[x]]
+  return(c(cor(NRI, hgt, use = "complete")^2, cor(NRI, hgt, method = "spearman", use = "complete")))
+})
+
+s.res <- sapply(sc, function(x) {
+  NRI <- -sa_sc_ses[[x]][, "z.is"]
+  hgt <- hgt_sc[[x]]
+  return(c(cor(NRI, hgt, use = "complete")^2, cor(NRI, hgt, method = "spearman", use = "complete")))
+})
+
+h.res <- sapply(sc, function(x) {
+  NRI <- -ha_sc_ses[[x]][, "z.is"]
+  hgt <- hgt_sc[[x]]
+  return(c(cor(NRI, hgt, use = "complete")^2, cor(NRI, hgt, method = "spearman", use = "complete")))
+})
+
+
+png("figures/coef-sc.png", 3000, 4000, pointsize = 75)
+
+op <- par(mfrow = c(3,2))
+
+plot(sc, t.res[2, ], pch = 21, bg = "tomato", ylab = expression(rho), main = "Tree")
+plot(sc, t.res[1, ], pch = 21, bg = "tomato", ylab = expression(r^2), main = "Tree")
+
+plot(sc, s.res[2, ], pch = 21, bg = "skyblue", ylab = expression(rho), main = "Shrub")
+plot(sc, s.res[1, ], pch = 21, bg = "skyblue", ylab = expression(r^2), main = "Shrub")
+
+plot(sc, h.res[2, ], pch = 21, bg = "forestgreen", ylab = expression(rho), main = "Herb")
+plot(sc, h.res[1, ], pch = 21, bg = "forestgreen", ylab = expression(r^2), main = "Herb")
+
+dev.off()
+
+
+
+t.res <- sapply(sc, function(x) {
+  NRI <- -ta_sc_ses[[x]][, "z.a.is"]
+  hgt <- hgt_sc[[x]]
+  return(c(cor(NRI, hgt, use = "complete")^2, cor(NRI, hgt, method = "spearman", use = "complete")))
+})
+
+s.res <- sapply(sc, function(x) {
+  NRI <- -sa_sc_ses[[x]][, "z.a.is"]
+  hgt <- hgt_sc[[x]]
+  return(c(cor(NRI, hgt, use = "complete")^2, cor(NRI, hgt, method = "spearman", use = "complete")))
+})
+
+h.res <- sapply(sc, function(x) {
+  NRI <- -ha_sc_ses[[x]][, "z.a.is"]
+  hgt <- hgt_sc[[x]]
+  return(c(cor(NRI, hgt, use = "complete")^2, cor(NRI, hgt, method = "spearman", use = "complete")))
+})
+
+
+png("figures/coef-a-sc.png", 3000, 4000, pointsize = 75)
+
+op <- par(mfrow = c(3,2))
+
+plot(sc, t.res[2, ], pch = 21, bg = "tomato", ylab = expression(rho), main = "Tree")
+plot(sc, t.res[1, ], pch = 21, bg = "tomato", ylab = expression(r^2), main = "Tree")
+
+plot(sc, s.res[2, ], pch = 21, bg = "skyblue", ylab = expression(rho), main = "Shrub")
+plot(sc, s.res[1, ], pch = 21, bg = "skyblue", ylab = expression(r^2), main = "Shrub")
+
+plot(sc, h.res[2, ], pch = 21, bg = "forestgreen", ylab = expression(rho), main = "Herb")
+plot(sc, h.res[1, ], pch = 21, bg = "forestgreen", ylab = expression(r^2), main = "Herb")
+
+dev.off()
 
 #_____________________________________________________________________
 
