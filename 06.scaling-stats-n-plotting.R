@@ -96,86 +96,77 @@ sc <- 1:20
 
 #_____________________________________________________________________
 
-png("figures/mean-nri-sc.png", 4000, 5000, pointsize = 75)
+png("figures/mean-nri-sc.png", 4000, 4000, pointsize = 75)
 
-op <- par(mfrow = c(4,3))
+op <- par(mfrow = c(4,3), mar = c(3, 3, 2, 0.5))
 
 meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.tl"], na.rm = T))
-
-plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree layer")
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: taxa labels")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.tl"], na.rm = T))
-
-plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub layer")
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: taxa labels")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.tl"], na.rm = T))
-
-plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb layer")
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: taxa labels")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 #---#
 
 meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.r"], na.rm = T))
-
-plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree layer")
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: richness")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.r"], na.rm = T))
-
-plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub layer")
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: richness")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.r"], na.rm = T))
-
-plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb layer")
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: richness")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 #---#
 
-meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.tl"], na.ism = T))
-
-plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree layer")
+meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.is"], na.ism = T))
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: ind. swap")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
-meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.tl"], na.ism = T))
-
-plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub layer")
+meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.is"], na.ism = T))
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: ind. swap")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
-meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.tl"], na.ism = T))
-
-plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb layer")
+meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.is"], na.ism = T))
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: ind. swap")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 #---#
 
 meanNRI <- sapply(ta_sc_ses, function(x) -mean(x[, "z.ts"], na.ism = T))
-
-plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree layer")
+plot(sc, meanNRI, pch = 21, bg = "tomato", main = "Tree: trial swap")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 meanNRI <- sapply(sa_sc_ses, function(x) -mean(x[, "z.ts"], na.ism = T))
 
-plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub layer")
+plot(sc, meanNRI, pch = 21, bg = "skyblue", main = "Shrub: trial swap")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 meanNRI <- sapply(ha_sc_ses, function(x) -mean(x[, "z.ts"], na.ism = T))
 
-plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb layer")
+plot(sc, meanNRI, pch = 21, bg = "forestgreen", main = "Herb: trial swap")
 model <- lm(meanNRI ~ sc)
 if (anova(model)[1, 5] < 0.05) abline(model)
 
 dev.off()
+
