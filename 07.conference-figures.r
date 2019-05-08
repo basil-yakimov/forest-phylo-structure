@@ -105,7 +105,7 @@ dev.off()
 
 x <- seq(1050, 1800, len = 1000)
 
-png("figures/conf-2a-tree-cov.png", width = 700, height = 400)
+png("figures/conf-2a-tree-cov.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, rowSums(ta), pch = 19, col = "tomato", 
      xlab = "Высота, м", ylab = "N, число стволов")
@@ -116,7 +116,7 @@ lines(x, y, lwd = 2)
 legend("topright", legend = "Деревья", bty = "n")
 dev.off()
 
-png("figures/conf-2b-shrub-cov.png", width = 700, height = 400)
+png("figures/conf-2b-shrub-cov.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, rowSums(sa), pch = 19, col = "skyblue", 
      xlab = "Высота, м", ylab = "N, число стволов")
@@ -127,10 +127,10 @@ lines(x, y, lwd = 2)
 legend("topright", legend = "Кустарники", bty = "n")
 dev.off()
 
-png("figures/conf-2с-herb-cov.png", width = 700, height = 400)
+png("figures/conf-2с-herb-cov.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, rowSums(ha), pch = 19, col = "forestgreen", 
-     xlab = "Высота, м", ylab = "N, число экз.")
+     xlab = "Высота, м", ylab = "N, проект. покр.")
 fit2 <- lm(rowSums(ha) ~ hgt + I(hgt^2))
 abc <- coef(fit2)
 y <- abc[1] + abc[2] * x + abc[3] * x^2
@@ -138,7 +138,7 @@ lines(x, y, lwd = 2)
 legend("topright", legend = "Трава", bty = "n")
 dev.off()
 
-png("figures/conf-3a-tree-S.png", width = 700, height = 400)
+png("figures/conf-3a-tree-S.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, specnumber(ta), pch = 19, col = "tomato", 
      xlab = "Высота, м", ylab = "S, число видов")
@@ -149,7 +149,7 @@ lines(x, y, lwd = 2)
 legend("topright", legend = "Деревья", bty = "n")
 dev.off()
 
-png("figures/conf-3b-shrub-S.png", width = 700, height = 400)
+png("figures/conf-3b-shrub-S.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, specnumber(sa), pch = 19, col = "skyblue", 
      xlab = "Высота, м", ylab = "S, число видов")
@@ -158,7 +158,7 @@ abline(fit1, lwd = 2)
 legend("topright", legend = "Кустарники", bty = "n")
 dev.off()
 
-png("figures/conf-3c-herb-S.png", width = 700, height = 400)
+png("figures/conf-3c-herb-S.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, specnumber(ha), pch = 19, col = "forestgreen", 
      xlab = "Высота, м", ylab = "S, число видов")
@@ -294,7 +294,7 @@ hgt[num]
 
 load("clean.data/phylo-ses-pqd.rda")
 
-png("figures/conf-7a-tree-NRI.png", width = 700, height = 400)
+png("figures/conf-7a-tree-NRI.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, -ta.ses$mpd, type = "n", xlab = "Высота, м", ylab = expression(NRI))
 abline(h = 0, lwd = 2, col = "grey")
@@ -304,7 +304,7 @@ abline(fit1, lwd = 2)
 legend("topright", legend = "Деревья", bty = "n")
 dev.off()
 
-png("figures/conf-7b-shrub-NRI.png", width = 700, height = 400)
+png("figures/conf-7b-shrub-NRI.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, -sa.ses$mpd, type = "n", xlab = "Высота, м", ylab = expression(NRI), ylim = c(-2, 4))
 abline(h = 0, lwd = 2, col = "grey")
@@ -314,7 +314,7 @@ abline(fit1, lwd = 2)
 legend("topleft", legend = "Кустарники", bty = "n")
 dev.off()
 
-png("figures/conf-7c-herb-NRI.png", width = 700, height = 400)
+png("figures/conf-7c-herb-NRI.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, -ha.ses$mpd, type = "n", xlab = "Высота, м", ylab = expression(NRI))
 abline(h = 0, lwd = 2, col = "grey")
@@ -324,7 +324,7 @@ abline(fit1, lwd = 2)
 legend("bottomright", legend = "Трава", bty = "n")
 dev.off()
 
-png("figures/conf-8a-tree-NRIa.png", width = 700, height = 400)
+png("figures/conf-8a-tree-NRIa.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, -ta.ses$mpd.a, type = "n", xlab = "Высота, м", ylab = expression(NRI[a]))
 abline(h = 0, lwd = 2, col = "grey")
@@ -333,7 +333,7 @@ fit1 <- lm(-ta.ses$mpd.a ~ hgt)
 abline(fit1, lwd = 2)
 dev.off()
 
-png("figures/conf-8b-shrub-NRIa.png", width = 700, height = 400)
+png("figures/conf-8b-shrub-NRIa.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, -sa.ses$mpd.a, type = "n", xlab = "Высота, м", ylab = expression(NRI[a]))
 abline(h = 0, lwd = 2, col = "grey")
@@ -344,7 +344,7 @@ y <- abc[1] + abc[2] * x + abc[3] * x^2
 lines(x, y, lwd = 2)
 dev.off()
 
-png("figures/conf-8c-herb-NRIa.png", width = 700, height = 400)
+png("figures/conf-8c-herb-NRIa.png", width = 800, height = 550)
 par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 plot(hgt, -ha.ses$mpd.a, type = "n", xlab = "Высота, м", ylab = expression(NRI[a]))
 abline(h = 0, lwd = 2, col = "grey")
