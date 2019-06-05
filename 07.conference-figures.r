@@ -15,6 +15,7 @@ hgt <- read.table("raw.data/hgt.txt")[[1]]
 
 #---#
 
+
 ta <- ta[, order(colSums(ta))]
 sa <- sa[, order(colSums(sa))]
 ha <- ha[, order(colSums(ha))]
@@ -381,6 +382,13 @@ dev.off()
 #---#
 
 
+library(ecomf)
+
+tpd <- PqD(ta, wood.tree)
+spd <- PqD(sa, wood.tree)
+hpd <- PqD(ha, herb.tree)
+
+
 png("figures/conf-phylo-div.png", width = 3000, height = 2000)
 op <- par(mfcol = c(3, 3), mar = c(4, 4, 0.5, 0.5), cex = 2)
 
@@ -400,6 +408,9 @@ plot(hgt, hpd[, 2], pch = 21, bg = "forestgreen", xlab = "Altitude, m", ylab = e
 plot(hgt, hpd[, 3], pch = 21, bg = "forestgreen", xlab = "Altitude, m", ylab = expression(PD[2]))
 
 par(op)
+
+dev.off()
+
 dev.off()
 
 #---#
@@ -602,3 +613,4 @@ par(op)
 plot.ses(rowSums(ta), hgt, col = "tomato", lab = expression(D[0] == S))
 plot.ses(rowSums(sa), hgt, col = "skyblue", lab = expression(D[0] == S))
 plot.ses(rowSums(ha), hgt, col = "forestgreen", lab = expression(D[0] == S))
+
