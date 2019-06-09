@@ -34,4 +34,4 @@ bci.tree <- phylo.maker(sp.list = sp.list, scenarios="S1")
 #Some taxonomic classifications are not consistent between sp.list and tree
 
 bci.tree <- bci.tree$scenario.1
-
+save(bci.tree, file = "clean.data/bci-phylo.rda")
