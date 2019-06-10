@@ -1,0 +1,15 @@
+"";"spearman";"p-value";"r^2"
+"taxa.labels";0,531;0;0,231
+"richness";0,538;0;0,232
+"frequency";0,534;0;0,228
+"sample.pool";0,537;0;0,224
+"phylogeny.pool";0,544;0;0,241
+"independentswap";0,496;0;0,194
+"trialswap";0,377;0;0,148
+"taxa.labels.a";0,403;0;0,08
+"richness.a";0,398;0;0,071
+"frequency.a";0,529;0;0,229
+"sample.pool.a";0,399;0;0,077
+"phylogeny.pool.a";0,39;0;0,073
+"independentswap.a";0,269;0,008;0,038
+"trialswap.a";0,109;0,292;0,007
