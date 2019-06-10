@@ -162,3 +162,13 @@ save(rh.tree, file = "clean.data/russian-forest-herb-phylo.rda")
 save(ta, file = "clean.data/russian-forest-tree-abund.rda")
 save(sa, file = "clean.data/russian-forest-shrub-abund.rda")
 save(ha, file = "clean.data/russian-forest-herb-abund.rda")
+
+scbi.tree <- phylo.maker(sp.list = scbi.df, scenarios="S1")
+md.tree <- phylo.maker(sp.list = md.df, scenarios="S1")
+
+scbi.tree <- scbi.tree$scenario.1
+md.tree <- md.tree$scenario.1
+
+save(scbi.tree, file = "clean.data/scbi-phylo.rda")
+save(md.tree, file = "clean.data/meadows-phylo.rda")
+
