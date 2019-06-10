@@ -191,7 +191,7 @@ dev.off()
 
 library(ecomf)
 tpd <- PqD(ta, wood.tree, hill = F)
-spd <- PqD(sa, shrub.tree, hill = F)
+spd <- PqD(sa, wood.tree, hill = F)
 hpd <- PqD(ha, herb.tree, hill = F)
 
 png("figures/conf-5a-tree-PD0.png", width = 700, height = 400)
