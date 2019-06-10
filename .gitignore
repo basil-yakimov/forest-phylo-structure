@@ -2,6 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+*.png
+*.pdf
+figures/*.png
 master
 *.Rproj
 .Rproj
