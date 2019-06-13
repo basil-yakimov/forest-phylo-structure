@@ -72,6 +72,12 @@ colnames(ha) <- herb.list
 ha <- ha[, colSums(ha) > 0]
 ha <- data.frame(ha)
 
+ha$Equisetum_arvense <- NULL
+ha$Gymnocarpium_dryopteris <- NULL
+ha$Athyrium_filix.femina <- NULL
+ha$Dryopteris_carthusiana <- NULL
+ha$Dryopteris_filix.mas <- NULL
+
 herb.g.list <- sapply(strsplit(herb.list, "_"), function(x) paste(x[1]))
 
 id4 <- which(herb.list %in% GBOTB.extended$tip.label)

@@ -13,6 +13,8 @@ colnames(ha) <- herb.list
 ha <- ha[, colSums(ha) > 0]
 ha <- data.frame(ha)
 
+ha$Pteridium_aquilinum <- NULL
+
 source("R/addition-tools.r")
 
 #_______________________________________________________
