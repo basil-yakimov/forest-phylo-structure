@@ -102,6 +102,51 @@ legend("bottom", c("0", "1-10", "10-100", "> 100"), horiz = TRUE, bty = "n", pch
 
 dev.off()
 
+
+
+
+#alpine
+
+alp <- c(77, 142, 80, 87, 88, 112, 70, 6, 7, 62, 65, 38, 48, 97, 16, 120, 135, 133, 21, 130, 104)
+
+h.col <- ha
+h.col[] <- "white"
+h.col[ha > 0 & ha < 10] <- "lightgreen"
+h.col[ha >= 10 & ha < 50] <- "darkgreen"
+h.col[ha >= 50] <- "black"
+
+h.col <- h.col[, alp]
+
+ab <- colSums(h.col)
+ab <- ab / max(ab) * 40
+
+png("figures/alp-herbs.png", width = 1200, height = 600, bg = "transparent")
+
+op <- par(mar = c(0.25, 12, 0.25, 0.25), cex = 2)
+
+plot(1, 1, type = "n", ylim = c(-1, 16.5), xlim = c(0, 151), axes = F, ann = F)
+for (ii in 1:21) points(1:96, rep(ii, 96), pch = 22, cex = 1, bg = h.col[,ii])
+
+rect(xleft = 111, ybottom = (1:21) - 0.2, xright = 111 + ab[1:21], ytop = (1:21) + 0.2, col = "lightgreen")
+
+axis(side = 2, at = c(1:21), labels = sub("_" , " ", colnames(h.col)[1:21]), las = 2, tick = F)
+legend("bottom", c("0", "1-10", "10-100", "> 100"), horiz = TRUE, bty = "n", pch = 22, 
+       pt.bg = c("white", "lightgreen", "darkgreen", "black"), pt.cex = 2)
+
+dev.off()
+
+
+
+aha <- ha[, alp]
+
+png("figures/alp-herbs-hgt.png", width = 600, height = 400)
+
+plot(hgt, rowSums(aha), pch = 19, col = "forestgreen", cex = 1.5, xlab = "Altitude, m", ylab = "Total abundance")
+
+dev.off()
+
+
+
 #---#
 
 x <- seq(1050, 1800, len = 1000)
