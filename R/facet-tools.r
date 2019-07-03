@@ -51,6 +51,7 @@ p.decomp <- function(d, tree, q)
     require(geiger)
     
     x <- d[,colSums(d) > 0]
+    if (is.vector(x)) return(c(a = NA, b = NA, g = NA, c = NA, u = NA, q = q))
     x <- x/rowSums(x)
     
     z <- colSums(x)
@@ -107,15 +108,87 @@ t.dist <- function(d, q, index = "c")
 p.dist <- function(d, tree, q, index = "c")
 {
     N <- dim(d)[1]
-    res <- matrix(rep(0, N*N), nrow = N)
+    res <- matrix(NA, nrow = N, ncol = N)
     rownames(res) <- colnames(res) <- rownames(d)
-    for (ii in 1:N)
+    for (ii in 1:(N-1))
     {
-        for (jj in 1:N)
+        for (jj in ii:N)
         {
             res[ii,jj] <- p.decomp(d[c(ii,jj),], tree, q)[index]
         }
     }
     
     return(as.dist(1-res))
+}
+
+
+p.decomp.95 <- function(d, tree, q)
+{
+  require(geiger)
+  
+  x <- d[,colSums(d) > 0]
+  if (is.vector(x)) return(c(a = NA, b = NA, g = NA, c = NA, u = NA, q = q))
+  x <- x/rowSums(x)
+  
+  z <- colSums(x)
+  N <- sum(z)
+  
+  pw.z <- t(sapply(1:95, function(uu) colSums(x[uu:(uu+1),])))
+  
+  if (q == 1) q <- 0.9999
+  if (q == 0) q <- 10^(-10)
+  
+  tmp.tree <- treedata(tree, t(x), warnings = F)$phy
+  T <- max(branching.times(tmp.tree))
+  branches <- matrix(NA, nrow = nrow(tmp.tree$edge), ncol = 5)
+  branches[,1:2] <- tmp.tree$edge
+  branches[,3] <- tmp.tree$edge.length
+  # pw.alpha <- matrix(NA, nrow = nrow(tmp.tree$edge), ncol = 95)
+  # pw.gamma <- matrix(NA, nrow = nrow(tmp.tree$edge), ncol = 95)
+  
+  comp.pw.g <- function(ii)
+  {
+    leaves.node = tips(tmp.tree, branches[ii, 2])
+    sapply(1:95, function(uu) (sum(pw.z[uu, leaves.node], na.rm = T)/2/T)^q)
+  }
+  
+  comp.pw.a <- function(ii)
+  {
+    leaves.node = tips(tmp.tree, branches[ii, 2])
+    sapply(1:95, function(uu) 
+      {
+      if (length(leaves.node) > 1) sum( rowSums(x[uu:(uu+1),leaves.node]/2/T)^q, na.rm = T) else
+        sum( (x[uu:(uu+1), leaves.node]/2/T)^q, na.rm = T)
+    })
+  }
+  pw.g <- t(sapply(1:nrow(branches), comp.pw.g))
+  pw.a <- t(sapply(1:nrow(branches), comp.pw.a))
+  
+  
+  # for (ii in 1:nrow(branches))
+  # {
+  #   leaves.node = tips(tmp.tree, branches[ii, 2])
+  #   branches[ii, 4] <- (sum(z[leaves.node]/N, na.rm = T)/T)^q
+  #   
+  #   if (length(leaves.node) > 1) branches[ii, 5] <- sum( rowSums(x[,leaves.node]/N/T)^q, na.rm = T) else
+  #     branches[ii, 5] <- sum( (x[,leaves.node]/N/T)^q, na.rm = T)
+  #   
+  #   for (uu in 1:95)
+  #   {
+  #     pw.gamma[ii, uu] <- (sum(pw.z[uu, leaves.node], na.rm = T)/2/T)^q
+  #     if (length(leaves.node) > 1) pw.alpha[ii, uu] <- sum( rowSums(x[uu:(uu+1),leaves.node, drop = F]/2/T)^q, na.rm = T) else
+  #       pw.alpha[ii, uu] <- sum( (x[uu:(uu+1),leaves.node]/2/T)^q, na.rm = T)
+  #   }
+  # }
+  
+  PDg <- colSums(branches[,3]*pw.g)^(1/(1-q))
+  PDa <- colSums(branches[,3]*pw.a)^(1/(1-q))/2
+  
+  Cqn <- (2^(1-q) - (PDg/PDa)^(1-q)) / (2^(1-q) - 1)
+  Uqn <- ( (PDa/PDg)^(1-q) - 2^(q-1) ) / ( 1 - 2^(q-1) )
+  
+  
+  res <- data.frame(a = PDa, b = PDg/PDa, g = PDg, c = Cqn, u = Uqn, q = q)
+  
+  return(res)
 }
