@@ -21,34 +21,34 @@ compute.beta.c <- function(cdm, tree, q)
 
 library(picante)
 
-null <- replicate(1000, compute.beta.c(ta, tipShuffle(wood.tree), 0))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(ta, null.model = "independentswap"), wood.tree, 0))
 beta.ses <- data.frame(tc0 = (compute.beta.c(ta, wood.tree, 0) - rowMeans(null)) / apply(null, 1, sd))
 
-null <- replicate(1000, compute.beta.c(ta, tipShuffle(wood.tree), 1))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(ta, null.model = "independentswap"), wood.tree, 1))
 beta.ses$tc1 <- (compute.beta.c(ta, wood.tree, 1) - rowMeans(null)) / apply(null, 1, sd)
 
-null <- replicate(1000, compute.beta.c(ta, tipShuffle(wood.tree), 2))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(ta, null.model = "independentswap"), wood.tree, 2))
 beta.ses$tc2 <- (compute.beta.c(ta, wood.tree, 2) - rowMeans(null)) / apply(null, 1, sd)
 
-null <- replicate(1000, compute.beta.c(sa, tipShuffle(wood.tree), 0))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(sa, null.model = "independentswap"), wood.tree, 0))
 beta.ses$sc0 <- (compute.beta.c(sa, wood.tree, 0) - rowMeans(null)) / apply(null, 1, sd)
 
-null <- replicate(1000, compute.beta.c(sa, tipShuffle(wood.tree), 1))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(sa, null.model = "independentswap"), wood.tree, 1))
 beta.ses$sc1 <- (compute.beta.c(sa, wood.tree, 1) - rowMeans(null)) / apply(null, 1, sd)
 
-null <- replicate(1000, compute.beta.c(sa, tipShuffle(wood.tree), 2))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(sa, null.model = "independentswap"), wood.tree, 2))
 beta.ses$sc2 <- (compute.beta.c(sa, wood.tree, 2) - rowMeans(null)) / apply(null, 1, sd)
 
-null <- replicate(1000, compute.beta.c(ha, tipShuffle(herb.tree), 0))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(ha, null.model = "independentswap"), herb.tree, 0))
 beta.ses$hc0 <- (compute.beta.c(ha, herb.tree, 0) - rowMeans(null)) / apply(null, 1, sd)
 
-null <- replicate(1000, compute.beta.c(ha, tipShuffle(herb.tree), 1))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(ha, null.model = "independentswap"), herb.tree, 1))
 beta.ses$hc1 <- (compute.beta.c(ha, herb.tree, 1) - rowMeans(null)) / apply(null, 1, sd)
 
-null <- replicate(1000, compute.beta.c(ha, tipShuffle(herb.tree), 2))
+null <- replicate(1000, compute.beta.c(randomizeMatrix(ha, null.model = "independentswap"), herb.tree, 2))
 beta.ses$hc2 <- (compute.beta.c(ha, herb.tree, 2) - rowMeans(null)) / apply(null, 1, sd)
 
-save(beta.ses, file = "clean.data/pw-beta-tl.rda")
+save(beta.ses, file = "clean.data/pw-beta-is.rda")
 
 source("R/plot.ses.r")
 
