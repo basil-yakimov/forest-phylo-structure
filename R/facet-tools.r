@@ -51,7 +51,7 @@ p.decomp <- function(d, tree, q)
     require(geiger)
     
     x <- d[,colSums(d) > 0]
-    if (is.vector(x)) return(c(a = NA, b = NA, g = NA, c = NA, u = NA, q = q))
+    if (is.vector(x)) return(c(a = 1, b = 1, g = 1, c = 1, u = 1, q = q))
     x <- x/rowSums(x)
     
     z <- colSums(x)
@@ -74,14 +74,11 @@ p.decomp <- function(d, tree, q)
             branches[ii, 5] <- sum( (x[,leaves.node]/N/T)^q, na.rm = T)
     }
     
-    
-    
     PDg <- sum(branches[,3]*branches[,4])^(1/(1-q))
     PDa <- sum(branches[,3]*branches[,5])^(1/(1-q))/N
     
     Cqn <- (N^(1-q) - (PDg/PDa)^(1-q)) / (N^(1-q) - 1)
     Uqn <- ( (PDa/PDg)^(1-q) - N^(q-1) ) / ( 1 - N^(q-1) )
-
 
     res <- c(a = PDa, b = PDg/PDa, g = PDg, c = Cqn, u = Uqn, q = q)
 
@@ -107,20 +104,22 @@ t.dist <- function(d, q, index = "c")
 
 p.dist <- function(d, tree, q, index = "c")
 {
-    N <- dim(d)[1]
-    res <- matrix(NA, nrow = N, ncol = N)
-    rownames(res) <- colnames(res) <- rownames(d)
-    for (ii in 1:(N-1))
+  N <- dim(d)[1]
+  res <- matrix(1, nrow = N, ncol = N)
+  rownames(res) <- colnames(res) <- rownames(d)
+  
+  inner1 <- function(x) 
+  {
+    inner2 <- function(z)
     {
-        for (jj in ii:N)
-        {
-            res[ii,jj] <- p.decomp(d[c(ii,jj),], tree, q)[index]
-        }
+      p.decomp(rbind(x, z), tree, q)[index]
     }
-    
-    return(as.dist(1-res))
+    apply(d, 1, inner2)
+  }
+  
+  res <- apply(d, 1, inner1)
+  return(as.dist(1-res))
 }
-
 
 p.decomp.95 <- function(d, tree, q)
 {
