@@ -3,6 +3,7 @@ t.decomp <- function(dat, q)
     N <- dim(dat)[1]
     
     x <- dat[,colSums(dat) > 0]
+    if (is.vector(x)) return(c(a = 1, b = 1, g = 1, c = 1, u = 1, q = q))
     p <- x/rowSums(x)
     
     z <- colSums(p)/N
@@ -89,16 +90,19 @@ p.decomp <- function(d, tree, q)
 t.dist <- function(d, q, index = "c")
 {
     N <- dim(d)[1]
-    res <- matrix(rep(0, N*N), nrow = N)
+    res <- matrix(1, nrow = N, ncol = N)
     rownames(res) <- colnames(res) <- rownames(d)
-    for (ii in 1:N)
+
+    inner1 <- function(x) 
     {
-        for (jj in 1:N)
-        {
-            res[ii,jj] <- t.decomp(d[c(ii,jj),], q)[index]
-        }
+      inner2 <- function(z)
+      {
+        t.decomp(rbind(x, z), q)[index]
+      }
+      apply(d, 1, inner2)
     }
     
+    res <- apply(d, 1, inner1)
     return(as.dist(1-res))
 }
 
