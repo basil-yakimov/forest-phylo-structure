@@ -1,5 +1,5 @@
-plot.ses <- function(ses, hgt = hgt, col, lab) {
-  plot(hgt, ses, pch = 19, col = col, ylab = lab)
+plot.ses <- function(ses, hgt = hgt, col, lab, xlab = "hgt") {
+  plot(hgt, ses, pch = 19, col = col, xlab = xlab, ylab = lab)
   fit1 <- lm(ses ~ hgt)
   fit2 <- lm(ses ~ hgt + I(hgt^2))
   sm1 <- summary(fit1)
