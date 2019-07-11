@@ -1,4 +1,4 @@
-plot.ses <- function(ses, hgt = hgt, col, lab, xlab = "hgt") {
+plot.ses <- function(ses, hgt = hgt, col = "grey", lab = "", xlab = "hgt") {
   plot(hgt, ses, pch = 19, col = col, xlab = xlab, ylab = lab)
   fit1 <- lm(ses ~ hgt)
   fit2 <- lm(ses ~ hgt + I(hgt^2))
