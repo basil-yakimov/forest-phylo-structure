@@ -24,6 +24,12 @@ ta.ses <- data.frame(mpd = (mpd(ta, wood.mat) - rowMeans(null)) / apply(null, 1,
 null <- replicate(999, mpd(randomizeMatrix(ta, null.model = "independentswap"), wood.mat, ab = T))
 ta.ses$mpd.a <- (mpd(ta, wood.mat, ab = T) - rowMeans(null)) / apply(null, 1, sd)
 
+null <- replicate(999, mntd(randomizeMatrix(ta, null.model = "independentswap"), wood.mat))
+ta.ses$mntd <- (mntd(ta, wood.mat) - rowMeans(null)) / apply(null, 1, sd)
+
+null <- replicate(999, mntd(randomizeMatrix(ta, null.model = "independentswap"), wood.mat, ab = T))
+ta.ses$mntd.a <- (mntd(ta, wood.mat, ab = T) - rowMeans(null)) / apply(null, 1, sd)
+
 null <- replicate(1000, PqD(randomizeMatrix(ta, null.model = "independentswap"), wood.tree, -1, F))
 ta.ses$pqd.n1 <- (PqD(ta, wood.tree, q = -1, hill = F) - rowMeans(null)) / apply(null, 1, sd)
 
@@ -47,6 +53,12 @@ sa.ses <- data.frame(mpd = (mpd(sa, shrub.mat) - rowMeans(null)) / apply(null, 1
 null <- replicate(999, mpd(randomizeMatrix(sa, null.model = "independentswap"), shrub.mat, ab = T))
 sa.ses$mpd.a <- (mpd(sa, shrub.mat, ab = T) - rowMeans(null)) / apply(null, 1, sd)
 
+null <- replicate(999, mntd(randomizeMatrix(sa, null.model = "independentswap"), shrub.mat))
+sa.ses$mntd <- (mntd(sa, shrub.mat) - rowMeans(null)) / apply(null, 1, sd)
+
+null <- replicate(999, mntd(randomizeMatrix(sa, null.model = "independentswap"), shrub.mat, ab = T))
+sa.ses$mntd.a <- (mntd(sa, shrub.mat, ab = T) - rowMeans(null)) / apply(null, 1, sd)
+
 null <- replicate(1000, PqD(randomizeMatrix(sa, null.model = "independentswap"), shrub.tree, -1, F))
 sa.ses$pqd.n1 <- (PqD(sa, shrub.tree, q = -1, hill = F) - rowMeans(null)) / apply(null, 1, sd)
 
@@ -69,6 +81,12 @@ ha.ses <- data.frame(mpd = (mpd(ha, herb.mat) - rowMeans(null)) / apply(null, 1,
 
 null <- replicate(999, mpd(randomizeMatrix(ha, null.model = "independentswap"), herb.mat, ab = T))
 ha.ses$mpd.a <- (mpd(ha, herb.mat, ab = T) - rowMeans(null)) / apply(null, 1, sd)
+
+null <- replicate(999, mntd(randomizeMatrix(ha, null.model = "independentswap"), herb.mat))
+ha.ses$mntd <- (mntd(ha, herb.mat) - rowMeans(null)) / apply(null, 1, sd)
+
+null <- replicate(999, mntd(randomizeMatrix(ha, null.model = "independentswap"), herb.mat, ab = T))
+ha.ses$mntd.a <- (mntd(ha, herb.mat, ab = T) - rowMeans(null)) / apply(null, 1, sd)
 
 null <- replicate(1000, PqD(randomizeMatrix(ha, null.model = "independentswap"), herb.tree, -1, F))
 ha.ses$pqd.n1 <- (PqD(ha, herb.tree, q = -1, hill = F) - rowMeans(null)) / apply(null, 1, sd)
