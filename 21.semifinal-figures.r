@@ -1,4 +1,5 @@
 library(vegan)
+library(picante)
 
 source("R/plot.ses.r")
 
@@ -59,6 +60,23 @@ plot.ses(hpd[, 3], hgt, col = "forestgreen", lab = expression(PD[2]), xlab = "Al
 
 par(op)
 dev.off()
+
+
+op <- par(mfcol = c(2, 3), mar = c(4, 4, 0.5, 0.5), cex = 1)
+plot.ses(tpd[, 1], specnumber(ta), col = "tomato", lab = expression(PD[0]), xlab = "S")
+plot.ses(tpd[, 3], diversity(ta, "invsimpson"), col = "tomato", lab = expression(PD[2]), xlab = expression(D[2]))
+plot.ses(spd[, 1], specnumber(sa), col = "skyblue", lab = expression(PD[0]), xlab = "S")
+plot.ses(spd[, 3], diversity(sa, "invsimpson"), col = "skyblue", lab = expression(PD[2]), xlab = expression(D[2]))
+plot.ses(hpd[, 1], specnumber(ha), col = "forestgreen", lab = expression(PD[0]), xlab = "S")
+plot.ses(hpd[, 3], diversity(ha, "invsimpson"), col = "forestgreen", lab = expression(PD[2]), xlab = expression(D[2]))
+par(op)
+
+corTPalpha <- rbind(c(cor(tpd[, 1], specnumber(ta)),
+                    cor(spd[, 1], specnumber(sa)),
+                    cor(hpd[, 1], specnumber(ha))),
+                    c(cor(tpd[, 3], diversity(ta, "invsimpson")),
+                      cor(spd[, 3], diversity(sa, "invsimpson")),
+                      cor(hpd[, 3], diversity(ha, "invsimpson"))))
 
 #---#
 
@@ -159,8 +177,6 @@ dev.off()
 
 #---#
 
-library(picante)
-
 ta.dpw0 <- comdist(ta, wood.mat, F)
 ta.dpw1 <- comdist(ta, wood.mat, T)
 sa.dpw0 <- comdist(sa, wood.mat, F)
@@ -260,6 +276,74 @@ plot.ses(ha.dnn1.95[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression
 
 par(op)
 dev.off()
+
+
+
+op <- par(mfcol = c(2, 3), mar = c(4, 4, 0.5, 0.5), cex = 1)
+
+plot.ses(ta.dpw0.95[c(T, F)], ta.sor.95[c(T, F)], col = "tomato", lab = expression(D[pw]), xlab = "Sorensen index")
+legend("topright", legend = "Tree layer", bty = "n")
+plot.ses(ta.dpw1.95[c(T, F)], ta.mh.95[c(T, F)], col = "tomato", lab = expression("D'"[pw]), xlab = "Morisita-Horn index")
+
+plot.ses(sa.dpw0.95[c(T, F)], sa.sor.95[c(T, F)], col = "skyblue", lab = expression(D[pw]), xlab = "Sorensen index")
+legend("topright", legend = "Shrub layer", bty = "n")
+plot.ses(sa.dpw1.95[c(T, F)], sa.mh.95[c(T, F)], col = "skyblue", lab = expression("D'"[pw]), xlab = "Morisita-Horn index")
+
+plot.ses(ha.dpw0.95[c(T, F)], ha.sor.95[c(T, F)], col = "forestgreen", lab = expression(D[pw]), xlab = "Sorensen index")
+legend("topright", legend = "Herb layer", bty = "n")
+plot.ses(ha.dpw1.95[c(T, F)], ha.mh.95[c(T, F)], col = "forestgreen", lab = expression("D'"[pw]), xlab = "Morisita-Horn index")
+
+par(op)
+
+
+op <- par(mfcol = c(2, 3), mar = c(4, 4, 0.5, 0.5), cex = 1)
+
+plot.ses(ta.dnn0.95[c(T, F)], ta.sor.95[c(T, F)], col = "tomato", lab = expression(D[nn]), xlab = "Sorensen index")
+legend("topright", legend = "Tree layer", bty = "n")
+plot.ses(ta.dnn1.95[c(T, F)], ta.mh.95[c(T, F)], col = "tomato", lab = expression("D'"[nn]), xlab = "Morisita-Horn index")
+
+plot.ses(sa.dnn0.95[c(T, F)], sa.sor.95[c(T, F)], col = "skyblue", lab = expression(D[nn]), xlab = "Sorensen index")
+legend("topright", legend = "Shrub layer", bty = "n")
+plot.ses(sa.dnn1.95[c(T, F)], sa.mh.95[c(T, F)], col = "skyblue", lab = expression("D'"[nn]), xlab = "Morisita-Horn index")
+
+plot.ses(ha.dnn0.95[c(T, F)], ha.sor.95[c(T, F)], col = "forestgreen", lab = expression(D[nn]), xlab = "Sorensen index")
+legend("topright", legend = "Herb layer", bty = "n")
+plot.ses(ha.dnn1.95[c(T, F)], ha.mh.95[c(T, F)], col = "forestgreen", lab = expression("D'"[nn]), xlab = "Morisita-Horn index")
+
+par(op)
+
+
+corTPbetaPW <- rbind(c(cor(ta.dpw0.95[c(T, F)], ta.sor.95[c(T, F)]),
+                      cor(sa.dpw0.95[c(T, F)], sa.sor.95[c(T, F)]),
+                      cor(ha.dpw0.95[c(T, F)], ha.sor.95[c(T, F)])),
+                    c(cor(ta.dpw1.95[c(T, F)], ta.mh.95[c(T, F)]),
+                      cor(sa.dpw1.95[c(T, F)], sa.mh.95[c(T, F)]),
+                      cor(ha.dpw1.95[c(T, F)], ha.mh.95[c(T, F)])))
+
+
+corTPbetaPW.p <- rbind(c(cor.test(ta.dpw0.95[c(T, F)], ta.sor.95[c(T, F)])$p.value,
+                       cor.test(sa.dpw0.95[c(T, F)], sa.sor.95[c(T, F)])$p.value,
+                       cor.test(ha.dpw0.95[c(T, F)], ha.sor.95[c(T, F)])$p.value),
+                     c(cor.test(ta.dpw1.95[c(T, F)], ta.mh.95[c(T, F)])$p.value,
+                       cor.test(sa.dpw1.95[c(T, F)], sa.mh.95[c(T, F)])$p.value,
+                       cor.test(ha.dpw1.95[c(T, F)], ha.mh.95[c(T, F)])$p.value))
+
+
+
+corTPbetaNN <- rbind(c(cor(ta.dnn0.95[c(T, F)], ta.sor.95[c(T, F)]),
+                       cor(sa.dnn0.95[c(T, F)], sa.sor.95[c(T, F)]),
+                       cor(ha.dnn0.95[c(T, F)], ha.sor.95[c(T, F)])),
+                     c(cor(ta.dnn1.95[c(T, F)], ta.mh.95[c(T, F)]),
+                       cor(sa.dnn1.95[c(T, F)], sa.mh.95[c(T, F)]),
+                       cor(ha.dnn1.95[c(T, F)], ha.mh.95[c(T, F)])))
+
+corTPbetaNN.p <- rbind(c(cor.test(ta.dnn0.95[c(T, F)], ta.sor.95[c(T, F)])$p.value,
+                         cor.test(sa.dnn0.95[c(T, F)], sa.sor.95[c(T, F)])$p.value,
+                         cor.test(ha.dnn0.95[c(T, F)], ha.sor.95[c(T, F)])$p.value),
+                       c(cor.test(ta.dnn1.95[c(T, F)], ta.mh.95[c(T, F)])$p.value,
+                         cor.test(sa.dnn1.95[c(T, F)], sa.mh.95[c(T, F)])$p.value,
+                         cor.test(ha.dnn1.95[c(T, F)], ha.mh.95[c(T, F)])$p.value))
+
 
 #---#
 
