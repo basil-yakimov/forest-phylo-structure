@@ -247,6 +247,12 @@ corTPbetaNN.p <- rbind(c(cor.test(ta.dnn0.95[c(T, F)], ta.sor.95[c(T, F)])$p.val
                          cor.test(sa.dnn1.95[c(T, F)], sa.mh.95[c(T, F)])$p.value,
                          cor.test(ha.dnn1.95[c(T, F)], ha.mh.95[c(T, F)])$p.value))
 
+round(corTPalpha, dig = 3)
+round(corTPbetaPW, dig = 3)
+round(corTPbetaNN, dig = 3)
+
+corTPbetaPW.p < 0.05
+corTPbetaNN.p < 0.05
 
 #---#
 
