@@ -20,7 +20,7 @@ plot.ses <- function(ses, hgt = hgt, col = "grey", lab = "", xlab = "hgt") {
       delta <- AIC(fit2) + (2*4*5/(n-4-1)) - AIC(fit1) - (2*3*4/(n-3-1))
       if (delta < 0)
       {
-        x <- seq(min(hgt), max(hgt), len = 1000)
+        x <- seq(min(hgt, na.rm = T), max(hgt, na.rm = T), len = 1000)
         abc <- coef(fit2)
         y <- abc[1] + abc[2] * x + abc[3] * x^2
         lines(x, y)
