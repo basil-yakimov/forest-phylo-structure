@@ -26,8 +26,34 @@ hpd <- PqD(ha, herb.tree)
 png("figures/qfinal-Fig01a.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 
-plot.ses(tpd[, 1], hgt, col = "tomato", lab = expression(PD[0]), xlab = "Altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+plot(hgt, tpd[, 1], pch = 19, col = "tomato", xlab = "Altitude, m", ylab = expression(PD[0]))
+fit1 <- lm(tpd[, 1] ~ hgt)
+fit2 <- lm(tpd[, 1] ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(tpd[, 1])
+text(usr[2], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[2], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p = " ~ .(round(p2, digits = 3)) ~
+                           ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                           ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
 
 dev.off()
 
