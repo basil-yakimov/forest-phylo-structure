@@ -57,45 +57,193 @@ lines(x, y)
 
 dev.off()
 
+
+
 png("figures/qfinal-Fig01b.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 
-plot.ses(tpd[, 3], hgt, col = "tomato", lab = expression(PD[2]), xlab = "Altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+#plot.ses(tpd[, 3], hgt, col = "tomato", lab = expression(PD[2]), xlab = "Altitude, m")
+#legend("topright", legend = "Tree layer", bty = "n")
+
+plot(hgt, tpd[, 3], pch = 19, col = "tomato", xlab = "Altitude, m", ylab = expression(PD[2]))
+fit1 <- lm(tpd[, 3] ~ hgt)
+fit2 <- lm(tpd[, 3] ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(tpd[, 3])
+text(usr[2], usr[4] - 0.1 - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[2], usr[4] - 0.1 - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 0.1 - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p < 0.001" ~ 
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
 
 dev.off()
+
 
 
 png("figures/qfinal-Fig01c.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 
-plot.ses(spd[, 1], hgt, col = "skyblue", lab = expression(PD[0]), xlab = "Altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(spd[, 1], hgt, col = "skyblue", lab = expression(PD[0]), xlab = "Altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(hgt, spd[, 1], pch = 19, col = "skyblue", xlab = "Altitude, m", ylab = expression(PD[0]))
+fit1 <- lm(spd[, 1] ~ hgt)
+fit2 <- lm(spd[, 1] ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(spd[, 1])
+text(usr[2], usr[4] - 0.1 - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[2], usr[4] - 0.1 - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 0.1 - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
 
 dev.off()
+
+
+
 
 png("figures/qfinal-Fig01d.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 
-plot.ses(spd[, 3], hgt, col = "skyblue", lab = expression(PD[2]), xlab = "Altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(spd[, 3], hgt, col = "skyblue", lab = expression(PD[2]), xlab = "Altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(hgt, spd[, 3], pch = 19, col = "skyblue", xlab = "Altitude, m", ylab = expression(PD[2]))
+fit1 <- lm(spd[, 3] ~ hgt)
+fit2 <- lm(spd[, 3] ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(spd[, 3])
+text(usr[2], usr[4] - 0.1 - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[2], usr[4] - 0.1 - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 0.1 - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
 
 dev.off()
+
 
 
 png("figures/qfinal-Fig01e.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 
-plot.ses(hpd[, 1], hgt, col = "forestgreen", lab = expression(PD[0]), xlab = "Altitude, m")
-legend("topleft", legend = "Herb layer", bty = "n")
+#plot.ses(hpd[, 1], hgt, col = "forestgreen", lab = expression(PD[0]), xlab = "Altitude, m")
+#legend("topleft", legend = "Herb layer", bty = "n")
+
+plot(hgt, hpd[, 1], pch = 19, col = "forestgreen", xlab = "Altitude, m", ylab = expression(PD[0]))
+fit1 <- lm(hpd[, 1] ~ hgt)
+fit2 <- lm(hpd[, 1] ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(hpd[, 1])
+text(usr[1], usr[4] - 0.1 - 0.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[1], usr[4] - 0.1 - 0.75*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[4] - 0.1 - 1.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
+
 
 
 png("figures/qfinal-Fig01f.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 
-plot.ses(hpd[, 3], hgt, col = "forestgreen", lab = expression(PD[2]), xlab = "Altitude, m")
-legend("topright", legend = "Herb layer", bty = "n")
+#plot.ses(hpd[, 3], hgt, col = "forestgreen", lab = expression(PD[2]), xlab = "Altitude, m")
+#legend("topright", legend = "Herb layer", bty = "n")
+
+plot(hgt, hpd[, 3], pch = 19, col = "forestgreen", xlab = "Altitude, m", ylab = expression(PD[2]), ylim = c(1.334367, 4.4))
+fit1 <- lm(hpd[, 3] ~ hgt)
+fit2 <- lm(hpd[, 3] ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(hpd[, 3])
+text(usr[2], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[2], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
 
 dev.off()
 
@@ -115,39 +263,205 @@ load("clean.data/phylo-ses-pqd.rda")
 
 png("figures/qfinal-Fig02a.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ta.ses$mpd, hgt, col = "tomato", lab = "SES MPD", xlab = "Altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+
+#plot.ses(ta.ses$mpd, hgt, col = "tomato", lab = "SES MPD", xlab = "Altitude, m")
+#legend("topright", legend = "Tree layer", bty = "n")
+
+plot(hgt, ta.ses$mpd, pch = 19, col = "tomato", xlab = "Altitude, m", ylab = "SES MPD")
+fit1 <- lm(ta.ses$mpd ~ hgt)
+fit2 <- lm(ta.ses$mpd ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ta.ses$mpd)
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
+
 dev.off()
 
 
 png("figures/qfinal-Fig02b.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ta.ses$mpd.a, hgt, col = "tomato", lab = expression("SES " * MPD[a]), xlab = "Altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+#plot.ses(ta.ses$mpd.a, hgt, col = "tomato", lab = expression("SES " * MPD[a]), xlab = "Altitude, m")
+#legend("topright", legend = "Tree layer", bty = "n")
+
+plot(hgt, ta.ses$mpd.a, pch = 19, col = "tomato", xlab = "Altitude, m", ylab = expression("SES " * MPD[a]))
+fit1 <- lm(ta.ses$mpd.a ~ hgt)
+fit2 <- lm(ta.ses$mpd.a ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ta.ses$mpd.a)
+text(usr[2], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[2], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
+
 dev.off()
 
 png("figures/qfinal-Fig02c.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(sa.ses$mpd, hgt, col = "skyblue", lab = "SES MPD", xlab = "Altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(sa.ses$mpd, hgt, col = "skyblue", lab = "SES MPD", xlab = "Altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(hgt, sa.ses$mpd, pch = 19, col = "skyblue", xlab = "Altitude, m", ylab = "SES MPD", ylim = c(-3.925523, 2.15))
+fit1 <- lm(sa.ses$mpd ~ hgt)
+fit2 <- lm(sa.ses$mpd ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(sa.ses$mpd)
+text(usr[2], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[2], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
+
 dev.off()
 
 png("figures/qfinal-Fig02d.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(sa.ses$mpd.a, hgt, col = "skyblue", lab = expression("SES " * MPD[a]), xlab = "Altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(sa.ses$mpd.a, hgt, col = "skyblue", lab = expression("SES " * MPD[a]), xlab = "Altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(hgt, sa.ses$mpd.a, pch = 19, col = "skyblue", xlab = "Altitude, m", ylab = expression("SES " * MPD[a]), ylim = c(-1.587927, 2))
+fit1 <- lm(sa.ses$mpd.a ~ hgt)
+fit2 <- lm(sa.ses$mpd.a ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(sa.ses$mpd.a)
+text(usr[2], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[2], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
 
 png("figures/qfinal-Fig02e.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ha.ses$mpd, hgt, col = "forestgreen", lab = "SES MPD", xlab = "Altitude, m")
-legend("top", legend = "Herb layer", bty = "n")
+#plot.ses(ha.ses$mpd, hgt, col = "forestgreen", lab = "SES MPD", xlab = "Altitude, m")
+#legend("top", legend = "Herb layer", bty = "n")
+
+plot(hgt, ha.ses$mpd, pch = 19, col = "forestgreen", xlab = "Altitude, m", ylab = "SES MPD", ylim = c(-1.587927, 2.2))
+fit1 <- lm(ha.ses$mpd ~ hgt)
+fit2 <- lm(ha.ses$mpd ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ha.ses$mpd)
+text(usr[1], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[1], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
 dev.off()
 
 png("figures/qfinal-Fig02f.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ha.ses$mpd.a, hgt, col = "forestgreen", lab = expression("SES " * MPD[a]), xlab = "Altitude, m")
-legend("top", legend = "Herb layer", bty = "n")
+#plot.ses(ha.ses$mpd.a, hgt, col = "forestgreen", lab = expression("SES " * MPD[a]), xlab = "Altitude, m")
+#legend("top", legend = "Herb layer", bty = "n")
+
+plot(hgt, ha.ses$mpd.a, pch = 19, col = "forestgreen", xlab = "Altitude, m", ylab = expression("SES " * MPD[a]), ylim = c(-2.270101, 2))
+fit1 <- lm(ha.ses$mpd.a ~ hgt)
+fit2 <- lm(ha.ses$mpd.a ~ hgt + I(hgt^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ha.ses$mpd.a)
+text(usr[2], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[2], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
 
 
@@ -206,38 +520,209 @@ ha.dnn1.95 <- diag(as.matrix(ha.dnn1)[-1, ])
 
 png("figures/qfinal-Fig03a.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ta.dpw0.95[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression(D[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+#plot.ses(ta.dpw0.95[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression(D[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Tree layer", bty = "n")
+
+plot(mh[c(T, F)], ta.dpw0.95[c(T, F)], pch = 19, col = "tomato", xlab = "Mean altitude, m", ylab = expression(D[pw]))
+fit1 <- lm(ta.dpw0.95[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(ta.dpw0.95[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ta.dpw0.95[c(T, F)])
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
 
 png("figures/qfinal-Fig03b.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ta.dpw1.95[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression("D'"[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+#plot.ses(ta.dpw1.95[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression("D'"[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Tree layer", bty = "n")
+
+plot(mh[c(T, F)], ta.dpw1.95[c(T, F)], pch = 19, col = "tomato", xlab = "Mean altitude, m", ylab = expression("D'"[pw]))
+fit1 <- lm(ta.dpw1.95[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(ta.dpw1.95[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ta.dpw1.95[c(T, F)])
+text(usr[2], usr[4] - 0.1 - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[2], usr[4] - 0.1 - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 0.1 - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit: p < 0.001" ~ 
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
 
 png("figures/qfinal-Fig03c.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(sa.dpw0.95[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression(D[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(sa.dpw0.95[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression(D[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(mh[c(T, F)], sa.dpw0.95[c(T, F)], pch = 19, col = "skyblue", xlab = "Mean altitude, m", ylab = expression(D[pw]))
+fit1 <- lm(sa.dpw0.95[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(sa.dpw0.95[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(sa.dpw0.95[c(T, F)])
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
 
 png("figures/qfinal-Fig03d.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(sa.dpw1.95[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression("D'"[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(sa.dpw1.95[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression("D'"[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(mh[c(T, F)], sa.dpw1.95[c(T, F)], pch = 19, col = "skyblue", xlab = "Mean altitude, m", ylab = expression("D'"[pw]))
+fit1 <- lm(sa.dpw1.95[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(sa.dpw1.95[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(sa.dpw1.95[c(T, F)])
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
 
 png("figures/qfinal-Fig03e.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ha.dpw0.95[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression(D[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Herb layer", bty = "n")
+#plot.ses(ha.dpw0.95[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression(D[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Herb layer", bty = "n")
+
+plot(mh[c(T, F)], ha.dpw0.95[c(T, F)], pch = 19, col = "forestgreen", xlab = "Mean altitude, m", ylab = expression(D[pw]), ylim = c(233.5425, 308))
+fit1 <- lm(ha.dpw0.95[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(ha.dpw0.95[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ha.dpw0.95[c(T, F)])
+text(usr[1], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[1], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
 dev.off()
 
 png("figures/qfinal-Fig03f.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(ha.dpw1.95[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression("D'"[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Herb layer", bty = "n")
+#plot.ses(ha.dpw1.95[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression("D'"[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Herb layer", bty = "n")
+
+plot(mh[c(T, F)], ha.dpw1.95[c(T, F)], pch = 19, col = "forestgreen", xlab = "Mean altitude, m", ylab = expression("D'"[pw]), xlim = c(1060, 1750))
+fit1 <- lm(ha.dpw1.95[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(ha.dpw1.95[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(ha.dpw1.95[c(T, F)])
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
 dev.off()
 
 
@@ -286,36 +771,199 @@ load("clean.data/pw-beta-tl.rda")
 
 png("figures/qfinal-Fig04a.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(beta.ses$td0[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression("SES " * D[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+#plot.ses(beta.ses$td0[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression("SES " * D[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Tree layer", bty = "n")
+
+plot(mh[c(T, F)], beta.ses$td0[c(T, F)], pch = 19, col = "tomato", xlab = "Mean altitude, m", ylab = expression("SES " * D[pw]), xlim = c(1060, 1750))
+fit1 <- lm(beta.ses$td0[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(beta.ses$td0[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(beta.ses$td0[c(T, F)])
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
+
 dev.off()
 
 png("figures/qfinal-Fig04b.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(beta.ses$td1[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression("SES D'"[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Tree layer", bty = "n")
+#plot.ses(beta.ses$td1[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression("SES D'"[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Tree layer", bty = "n")
+
+plot(mh[c(T, F)], beta.ses$td1[c(T, F)], pch = 19, col = "tomato", xlab = "Mean altitude, m", ylab = expression("SES " * D[pw]))
+fit1 <- lm(beta.ses$td1[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(beta.ses$td1[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(beta.ses$td1[c(T, F)])
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Tree layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
+
 dev.off()
 
 png("figures/qfinal-Fig04c.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(beta.ses$sd0[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression("SES " * D[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(beta.ses$sd0[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression("SES " * D[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(mh[c(T, F)], beta.ses$sd0[c(T, F)], pch = 19, col = "skyblue", xlab = "Mean altitude, m", ylab = expression("SES " * D[pw]))
+fit1 <- lm(beta.ses$sd0[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(beta.ses$sd0[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(beta.ses$sd0[c(T, F)])
+text(usr[1], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[1], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p < 0.001" ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+abline(fit1)
+
+
 dev.off()
 
 png("figures/qfinal-Fig04d.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(beta.ses$sd1[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression("SES D'"[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Shrub layer", bty = "n")
+#plot.ses(beta.ses$sd1[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression("SES D'"[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Shrub layer", bty = "n")
+
+plot(mh[c(T, F)], beta.ses$sd1[c(T, F)], pch = 19, col = "skyblue", xlab = "Mean altitude, m", ylab = expression("SES D'"[pw]))
+fit1 <- lm(beta.ses$sd1[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(beta.ses$sd1[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(beta.ses$sd1[c(T, F)])
+text(usr[2], usr[3] + 0.1 - 1.25*(usr[3] - usr[4]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Shrub layer")
+
+text(usr[2], usr[3] + 0.1 - 0.75*(usr[3] - usr[4]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[3] + 0.1 - 0.25*(usr[3] - usr[4]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
+
 dev.off()
 
 png("figures/qfinal-Fig04e.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(beta.ses$hd0[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression("SES " * D[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Herb layer", bty = "n")
+#plot.ses(beta.ses$hd0[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression("SES " * D[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Herb layer", bty = "n")
+
+plot(mh[c(T, F)], beta.ses$hd0[c(T, F)], pch = 19, col = "forestgreen", xlab = "Mean altitude, m", ylab = expression("SES " * D[pw]), ylim = c(-0.22, 2.5))
+fit1 <- lm(beta.ses$hd0[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(beta.ses$hd0[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(beta.ses$hd0[c(T, F)])
+text(usr[1], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[1], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[1], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+
 dev.off()
 
 png("figures/qfinal-Fig04f.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
-plot.ses(beta.ses$hd1[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression("SES D'"[pw]), xlab = "Mean altitude, m")
-legend("topright", legend = "Herb layer", bty = "n")
+#plot.ses(beta.ses$hd1[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression("SES D'"[pw]), xlab = "Mean altitude, m")
+#legend("topright", legend = "Herb layer", bty = "n")
+
+plot(mh[c(T, F)], beta.ses$hd1[c(T, F)], pch = 19, col = "forestgreen", xlab = "Mean altitude, m", ylab = expression("SES D'"[pw]), ylim = c(-1.22, 2.7))
+fit1 <- lm(beta.ses$hd1[c(T, F)] ~ mh[c(T, F)])
+fit2 <- lm(beta.ses$hd1[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
+sm1 <- summary(fit1)
+sm2 <- summary(fit2)
+p1 <- pf(sm1$fstatistic[1], df1 = sm1$fstatistic[2], df2 = sm1$fstatistic[3], lower.tail = F)
+p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lower.tail = F)
+
+usr <- par("usr")
+
+n <- length(beta.ses$hd1[c(T, F)])
+text(usr[2], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = "Herb layer")
+
+text(usr[2], usr[4] - 0.75*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Linear fit: p = " ~ .(round(p1, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm1$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit1) + (2*3*4/(n-3-1)), digits = 3))))
+
+text(usr[2], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
+     labels = bquote("Quadratic fit:  p = " ~ .(round(p2, digits = 3)) ~
+                       ", " ~ r^2 ~ " = " ~ .(round(sm2$r.squared, digits = 3)) ~
+                       ", AIC = " ~ .(round(AIC(fit2) + (2*4*5/(n-4-1)), digits = 3))))
+x <- seq(min(hgt), max(hgt), len = 1000)
+abc <- coef(fit2)
+y <- abc[1] + abc[2] * x + abc[3] * x^2
+lines(x, y)
+
+
 dev.off()
