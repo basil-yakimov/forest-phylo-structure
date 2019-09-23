@@ -517,7 +517,7 @@ p2 <- pf(sm2$fstatistic[1], df1 = sm2$fstatistic[2], df2 = sm2$fstatistic[3], lo
 
 usr <- par("usr")
 
-n <- length(ta.dpw1.95[c(T, F)])
+n <- length(ta.dnn1.95[c(T, F)])
 text(usr[2], usr[4] - 0.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
      labels = "Tree layer")
 
@@ -535,7 +535,7 @@ dev.off()
 
 # Modify next 4 panels (pw -> nn)
 
-png("figures/qfinal-Fig03c.png", width = 1200, height = 800)
+png("figures/qfinal-FigS03c.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 #plot.ses(sa.dnn0.95[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression(D[nn]), xlab = "Mean altitude, m")
 #legend("topright", legend = "Shrub layer", bty = "n")
@@ -570,7 +570,7 @@ lines(x, y)
 
 dev.off()
 
-png("figures/qfinal-Fig03d.png", width = 1200, height = 800)
+png("figures/qfinal-FigS03d.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 #plot.ses(sa.dnn1.95[c(T, F)], mh[c(T, F)], col = "skyblue", lab = expression("D'"[nn]), xlab = "Mean altitude, m")
 #legend("topright", legend = "Shrub layer", bty = "n")
@@ -601,7 +601,7 @@ text(usr[2], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 2, adj = c(1, 1),
 
 dev.off()
 
-png("figures/qfinal-Fig03e.png", width = 1200, height = 800)
+png("figures/qfinal-FigS03e.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 #plot.ses(ha.dnn0.95[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression(D[nn]), xlab = "Mean altitude, m")
 #legend("topright", legend = "Herb layer", bty = "n")
@@ -632,7 +632,7 @@ text(usr[1], usr[4] - 1.25*(usr[4] - usr[3]) / 10, pos = 4, adj = c(1, 1),
 
 dev.off()
 
-png("figures/qfinal-Fig03f.png", width = 1200, height = 800)
+png("figures/qfinal-FigS03f.png", width = 1200, height = 800)
 op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 #plot.ses(ha.dnn1.95[c(T, F)], mh[c(T, F)], col = "forestgreen", lab = expression("D'"[nn]), xlab = "Mean altitude, m")
 #legend("topright", legend = "Herb layer", bty = "n")
@@ -709,7 +709,7 @@ op <- par(mar = c(4, 4, 0.5, 0.5), cex = 2)
 #plot.ses(beta.ses$tdnn1[c(T, F)], mh[c(T, F)], col = "tomato", lab = expression("SES D'"[pw]), xlab = "Mean altitude, m")
 #legend("topright", legend = "Tree layer", bty = "n")
 
-plot(mh[c(T, F)], beta.ses$tdnn1[c(T, F)], pch = 19, col = "tomato", xlab = "Mean altitude, m", ylab = expression("SES " * D[nn]), ylim = c(-1.6, 1.140715))
+plot(mh[c(T, F)], beta.ses$tdnn1[c(T, F)], pch = 19, col = "tomato", xlab = "Mean altitude, m", ylab = expression("SES D'"[nn]), ylim = c(-1.6, 1.140715))
 fit1 <- lm(beta.ses$tdnn1[c(T, F)] ~ mh[c(T, F)])
 fit2 <- lm(beta.ses$tdnn1[c(T, F)] ~ mh[c(T, F)] + I(mh[c(T, F)]^2))
 sm1 <- summary(fit1)
