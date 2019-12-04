@@ -14,19 +14,18 @@ hgt <- read.table("raw.data/hgt.txt")[[1]]
 load("clean.data/wood-phylo.rda")
 load("clean.data/herb-phylo.rda")
 
-
-colnames(ta) <- colnames(ta)[sample(ncol(ta))]
-colnames(sa) <- colnames(sa)[sample(ncol(sa))]
-colnames(ha) <- colnames(ha)[sample(ncol(ha))]
+ta <- ta[sample(nrow(ta)), ]
+sa <- sa[sample(nrow(sa)), ]
+ha <- ha[sample(nrow(ha)), ]
 
 save(ta, file = "clean.data/tree-abund2.rda")
 save(sa, file = "clean.data/shrub-abund2.rda")
 save(ha, file = "clean.data/herb-abund2.rda")
 
 
-colnames(ta) <- colnames(ta)[sample(ncol(ta))]
-colnames(sa) <- colnames(sa)[sample(ncol(sa))]
-colnames(ha) <- colnames(ha)[sample(ncol(ha))]
+ta <- ta[sample(nrow(ta)), ]
+sa <- sa[sample(nrow(sa)), ]
+ha <- ha[sample(nrow(ha)), ]
 
 save(ta, file = "clean.data/tree-abund3.rda")
 save(sa, file = "clean.data/shrub-abund3.rda")
