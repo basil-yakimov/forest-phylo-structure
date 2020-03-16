@@ -43,6 +43,13 @@ h.dist.qt <- as.matrix(daisy(herb.tr[, -hqual], metric = "gower"))
 h.dist.ql <- as.matrix(daisy(herb.tr[, hqual], metric = "gower"))
 
 
+save(t.dist, t.dist.qt, t.dist.ql, file = "clean.data/tree-traits.rda")
+save(s.dist, s.dist.qt, s.dist.ql, file = "clean.data/shrub-traits.rda")
+save(h.dist, h.dist.qt, h.dist.ql, file = "clean.data/herb-traits.rda")
+
+save(ta, sa, ha, file = "clean.data/func-abund.rda")
+
+
 #___________________________________________________________________________________________________
 
 library(picante)
